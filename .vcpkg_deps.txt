@@ -1,0 +1,5 @@
+glew
+glfw3
+
+nlohmann-json
+tomlplusplus

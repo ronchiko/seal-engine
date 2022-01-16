@@ -1,0 +1,12 @@
+
+.vscode/
+.idea/
+
+bin/
+demo-project/
+
+*.exe
+*.dll
+*.lib
+*.so
+*.a
