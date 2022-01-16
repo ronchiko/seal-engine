@@ -23,4 +23,4 @@ make_directory(lib/Debug)
 set($ENV:{SEAL_INCLUDE} ${CMAKE_ROOT}/include)
 # Build subproject
 add_subdirectory(engine)
-add_subdirectory(manager)
+add_subdirectory(packager)
