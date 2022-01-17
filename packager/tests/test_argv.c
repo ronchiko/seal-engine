@@ -55,7 +55,7 @@ int TestParseArgv_OnValidInputWithEmptyLookup(void) {
 	Seal_PackagerArgs *args = Seal_ParseArgv(LEN(argv), argv);
 
 	// Assert
-	ASSERT(args != NULL);
+	ASSERT(args == NULL);
 
 cleanup:
 	Seal_FreeArgv(args);
