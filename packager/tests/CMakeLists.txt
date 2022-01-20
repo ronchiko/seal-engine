@@ -9,6 +9,6 @@ foreach(FILE ${TESTS})
 	target_link_libraries(${TEST} PRIVATE seal-pkg-lib)
 	target_include_directories(${TEST} PRIVATE include)
 
-	add_test(Test-${TEST} ${TEST})
+	add_test(Test-${TEST} ${TEST} ${CMAKE_CURRENT_LIST_DIR})
 endforeach()
 

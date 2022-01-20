@@ -22,7 +22,7 @@ struct Seal_GlobExpr {
 	size_t count;
 };
 
-static int HandleSubExpr(Seal_GlobExpr expr, char *match, char **cur, char *glob) {
+static int HandleSubExpr(Seal_GlobExpr expr, char *match, char **cur, const char *glob) {
 	if(*glob == '*') {
 		// Check for double wildcards
 		if(*cur == match) {
@@ -128,3 +128,23 @@ static int Seal_GlobMatchFork(Seal_GlobExpr expr, int node, const char *str) {
 int Seal_GlobMatch(Seal_GlobExpr expr, const char *str) {
 	return Seal_GlobMatchFork(expr, 0, str);
 }
+
+int Seal_GetFileName(const char *path, int maxPathLen, char *buf, int bufSize) {
+	const char *lastSperator = path;
+	
+	for(int i = 0; i < maxPathLen && *path; ++path, ++i) {
+		if(*path == '/' || *path == '\\') lastSperator = path;
+	}
+
+	int length = path - lastSperator - 1;
+	memcpy(buf, lastSperator + 1, sizeof(char) * min(length, maxPathLen));
+	buf[length] = 0;
+
+	return length;
+}
+
+#if defined(_WIN32) || defined(_WIN64)
+#include "windows.c.i"
+#else
+#error File iterator is avialable for this system in this version
+#endif

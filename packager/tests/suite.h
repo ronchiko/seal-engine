@@ -7,4 +7,19 @@
 
 #define ASSERT(expr) if(!(expr)) { printf("\033[31;1m"__FILE__":%d raised assert failed\nFailure: "#expr"\033[0m\n", __LINE__); \
 	result = 1; goto cleanup; }
-#define RUN_TEST(name) printf("Running test "#name"\n"); result |= (name)(); 
+#define RUN_TEST(name) printf("Running test "#name"\n"); result |= (name)();  
+
+#if  defined(_WIN32) || defined(_WIN64)
+#include <windows.h>
+
+#define WORKDIR(w) SetCurrentDirectory((w))
+#endif
+
+static int ArrayContainsStr(const char ** array, int len, const char *str) {
+	for(int i = 0; i < len; ++i) {
+		if(STREQ(array[i], str))
+			return 1;
+	}
+
+	return 0;
+}
