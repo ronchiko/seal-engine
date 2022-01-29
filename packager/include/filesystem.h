@@ -25,8 +25,14 @@ typedef enum {
 	FILE_ITER_INCLUDE_DIRECTORIES = BIT(1)
 } Seal_FileIteratorFlags;
 
-int Seal_GetFileName(const char *path, int maxPathLen, char *buf, int bufSize);
+int Seal_GetFileName(const char *path, int maxPathLen, char *out, int outSize);
+int Seal_GetFileExt(const char *path, int maxPathLen, char *out, int outSize);
 
 Seal_FileIterator Seal_CreateFileIterator(const char *glob, int flags);
 int Seal_FileIteratorNext(Seal_FileIterator iterator, char *path, int n);
 void Seal_FreeFileIterator(Seal_FileIterator iter);
+
+int Seal_CreateDirectory(const char *path);
+int Seal_DirectoryExists(const char *path);
+
+int Seal_DeleteChildren(const char *path, int flags);

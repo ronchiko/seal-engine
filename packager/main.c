@@ -1,32 +1,33 @@
+#include <stdlib.h>
 #include <stdio.h>
+#include <zip.h>
 
 #include "config.h"
 
 #include "argv.h"
 #include "filesystem.h"
+#include "packager.h"
+#include "cache.h"
+
+#define FILES_TO_DELETE_COUNT		8
 
 int main(int argc, char *argv[]) {
 	/*
 	 * Expected input: seal-pkg [OPTIONS] --lookup <lookupname>.c [asset folders...]
 	 */
+	Seal_LoadOrCreateCache();
+
+	atexit(&Seal_FinializeCache);
 	printf("Seal Packager Version %d.%d\n", VERSION_MAJOR, VERSION_MINOR);
 	// Parse arguments
 	Seal_PackagerArgs *args = Seal_ParseArgv(argc, argv);
-	printf("LOOKUP: %s\n", args->lookup);
-
-	for(int i = 0; i < args->assets.count; ++i)
-		printf("%s\n", args->assets.patterns[i]);
-
-	// Run packager
-	char path[2049];
-	int type, total = 0;
-	Seal_FileIterator iter = Seal_CreateFileIterator("src/", FILE_ITER_RECURSIVE);
-	while((type = Seal_FileIteratorNext(iter, path, 2048)) > 0) {
-		printf("\t%s: %s\n", type == FILE_ITER_RESULT_FILE ? "FILE" : "DIR", path);
-		++total;
+	
+	if(args->cleanCache) {
+		Seal_DeleteChildren(".seal", FILE_ITER_RECURSIVE | FILE_ITER_INCLUDE_DIRECTORIES);
 	}
-	Seal_FreeFileIterator(iter);
-	printf("%d\n", total);
+		
+	// Run packager
+	Seal_CreateArchive(args);
 
 	// Generate lookup
 	Seal_FreeArgv(args);

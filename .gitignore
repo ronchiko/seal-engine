@@ -2,4 +2,8 @@ bin/
 lib/
 
 .vscode/
+.seal/
 *.code-workspace
+
+*.pup
+*.zip

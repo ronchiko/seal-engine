@@ -72,8 +72,8 @@ void Seal_ActivateRender2dSystem(void) {
 	} Vertex;
 
 	if(gGLDefaults.program == SEAL_GL_NO_PROGRAM) {
-		gGLDefaults.vertex = Seal_GL_CompileShader  ("assets/vertex.glsl", SEAL_SHADER_VERTEX);
-		gGLDefaults.fragment = Seal_GL_CompileShader("assets/fragment.glsl", SEAL_SHADER_FRAGMENT);
+		gGLDefaults.vertex = Seal_GL_CompileShader  ("assets/shaders/vertex.glsl", SEAL_SHADER_VERTEX);
+		gGLDefaults.fragment = Seal_GL_CompileShader("assets/shaders/fragment.glsl", SEAL_SHADER_FRAGMENT);
 
 		gGLDefaults.program = Seal_GL_LinkProgram(gGLDefaults.vertex, gGLDefaults.fragment);
 	}

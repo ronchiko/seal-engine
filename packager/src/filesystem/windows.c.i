@@ -97,3 +97,25 @@ void Seal_FreeFileIterator(Seal_FileIterator iter) {
 	free(iter->root);
 	free(iter);
 }
+
+int Seal_CreateDirectory(const char *path) {
+	return CreateDirectory(path, NULL);
+}
+
+int Seal_DirectoryExists(const char *path) {
+	DWORD attribs = GetFileAttributes(path);
+
+	return attribs != INVALID_FILE_ATTRIBUTES && (attribs & FILE_ATTRIBUTE_DIRECTORY);
+}
+
+int Seal_DeleteChildren(const char *path, int flags) {
+	Seal_FileIterator iterator = Seal_CreateFileIterator(path, flags);
+	
+	char _path[512];
+	for(;Seal_FileIteratorNext(iterator, _path, 511) >= 0;) {
+		remove(_path);
+	}
+
+	Seal_FreeFileIterator(iterator);
+	return 0;
+}
