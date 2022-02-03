@@ -1,11 +1,11 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <zip.h>
+#include <seal/fs.h>
 
 #include "config.h"
 
 #include "argv.h"
-#include "filesystem.h"
 #include "packager.h"
 #include "cache.h"
 

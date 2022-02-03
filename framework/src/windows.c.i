@@ -1,9 +1,11 @@
 
 #include <windows.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include <stdbool.h>
 
-#include "filesystem.h"
+#include <seal/debug.h>
 
 struct _Seal_FileIterator {
 	HANDLE findHandle;

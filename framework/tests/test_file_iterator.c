@@ -1,8 +1,8 @@
 
 #include <stdlib.h>
 
-#include "filesystem.h"
-#include "suite.h"
+#include <seal/fs.h>
+#include <seal/testing/suite.h>
 
 int TestFileIterator_WhenNoFlagsOn() {
 	int result = 0;

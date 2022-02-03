@@ -1,3 +1,4 @@
+#define _USE_BASE_MALLOC
 
 #include <stdlib.h>
 #include <string.h>

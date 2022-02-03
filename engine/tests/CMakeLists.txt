@@ -7,7 +7,10 @@ foreach(File ${Tests})
 	string(REPLACE "/" "." Testname ${Testname})
 
 	add_executable(${Testname} ${File})
-	target_link_libraries(${Testname} PRIVATE SealEngine)
+	target_link_libraries(${Testname} PRIVATE 
+		SealEngine
+		$ENV{SEAL_BIN_DIR}/$<CONFIG>/SealFramework.lib
+	)
 	target_include_directories(${Testname} PRIVATE $ENV{SEAL_INCLUDE} include)
 	
 	message(STATUS "Adding ${Testname} - ${File}")

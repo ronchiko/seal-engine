@@ -26,5 +26,6 @@ set(SEAL_BUILD_GLOBAL 1)
 
 set($ENV:{SEAL_INCLUDE} ${CMAKE_ROOT}/include)
 # Build subproject
+add_subdirectory(framework)
 add_subdirectory(engine)
 add_subdirectory(packager)

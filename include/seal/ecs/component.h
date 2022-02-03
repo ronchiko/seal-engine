@@ -45,10 +45,10 @@ typedef struct Seal_ComponentsQuery {
 	Seal_Size count;
 } Seal_ComponentsQuery;
 
-struct Seal_IterativeBuffer {
+typedef struct Seal_IterativeBuffer {
 	char *buffer;
 	int elementSize, elements;
-};
+} Seal_IterativeBuffer;
 
 typedef struct Seal_QueryContext {
 	struct Seal_IterativeBuffer	*buffers;
@@ -64,7 +64,7 @@ typedef struct Seal_QueryContext {
  * \param outBuffer The output buffer (size=required.count)
  * \param count The amount of components int the output buffer
  */
-struct Seal_IterativeBuffer Seal_BufferOf(Seal_ComponentBuffer buffer);
+Seal_IterativeBuffer Seal_BufferOf(Seal_ComponentBuffer buffer);
 Seal_Size Seal_QueryComponents(Seal_QueryContext *ctx, Seal_Component **outBuffer, Seal_Size maxCount);
 
 Seal_Bool Seal_ComponentsMatch(Seal_ComponentsQuery query, Seal_Component **components, const Seal_Size compoCount);

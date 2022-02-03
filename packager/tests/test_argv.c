@@ -2,9 +2,9 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "argv.h"
+#include <seal/testing/suite.h>
 
-#include "suite.h"
+#include "argv.h"
 
 
 int TestParseArgv_OnValidInputNoLookup(void) {

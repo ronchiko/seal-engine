@@ -3,10 +3,10 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "seal/common.h"
-#include "seal/debug.h"
+#include <seal/common.h>
 
 #ifdef _DEBUG
+#include <seal/debug.h>
 
 #define LIST_GROWTH_RATE 200
 
@@ -103,6 +103,7 @@ void *Seal_DbgReallocate(void *addr, size_t size, const char *file, int line) {
 	if(!addr) {
 		return Seal_DbgAllocate(size, file, line);
 	}
+	
 	const int length = gMemorySet.allocated;
 	int position = Seal_HashAddress(addr, length);
 	

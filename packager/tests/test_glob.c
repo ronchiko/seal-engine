@@ -2,7 +2,7 @@
 
 #include "filesystem.h"
 
-#include "suite.h"
+#include <seal/testing/suite.h>
 
 int TestParseGlob_OnValidGlobExpr() {
 	int result = 0;

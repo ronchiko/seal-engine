@@ -8,14 +8,20 @@ configure_file(config.h.i config.h)
 include_directories( 
 	${PROJECT_BINARY_DIR} 
 	include
-	../include
+	$ENV{SEAL_INCLUDE}
 )
 
 file(GLOB_RECURSE SOURCE CONFIGURE_DEPENDS src/*.c)
-add_library(seal-pkg-lib STATIC ${SOURCE})
+add_library(seal-pkg-lib STATIC 
+	${SOURCE}
+)
 
 add_executable(seal-pkg main.c)
-target_link_libraries(seal-pkg PRIVATE seal-pkg-lib libzip::zip)
+target_link_libraries(seal-pkg PRIVATE 
+	seal-pkg-lib 
+	libzip::zip
+	$ENV{SEAL_BIN_DIR}/$<CONFIG>/SealFramework.lib
+)
 
 if (DEFINED SEAL_BUILD_GLOBAL)
 	MoveExecutable(seal-pkg-lib lib packager)

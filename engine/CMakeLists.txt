@@ -19,7 +19,13 @@ target_link_libraries(SealEngine PUBLIC
 	glu32 
 	opengl32
 	libzip::zip
+	$ENV{SEAL_BIN_DIR}/$<CONFIG>/SealFramework.lib
 )
+
+## Benckmarks
+add_executable(benchmark_ecs benchmarks/benchmark_ecs.c)
+target_include_directories(benchmark_ecs PUBLIC $ENV{SEAL_BIN_DIR}/$<CONFIG>/SealFramework.lib)
+target_link_libraries(benchmark_ecs PUBLIC $ENV{SEAL_BIN_DIR}/$<CONFIG>/SealFramework.lib SealEngine)
 
 ## Tests
 enable_testing()

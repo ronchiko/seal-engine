@@ -4,8 +4,9 @@
 #include <string.h>
 #include <zip.h>
 
+#include <seal/fs.h>
+
 #include "argv.h"
-#include "filesystem.h"
 #include "packager.h"
 #include "cache.h"
 

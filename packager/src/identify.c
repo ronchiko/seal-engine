@@ -1,7 +1,7 @@
 
 #include <string.h>
+#include <seal/fs.h>
 
-#include "filesystem.h"
 #include "packager.h"
 
 

@@ -2,9 +2,9 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <seal/fs.h>
 
 #include "cache.h"
-#include "filesystem.h"
 
 struct CacheObject {
 	char key[33];

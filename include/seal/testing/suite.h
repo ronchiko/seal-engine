@@ -2,6 +2,12 @@
 
 #include <stdio.h>
 
+// Mocks
+const char *Seal_ProgramName = "Test";
+int Seal_InitializeUserSystems(void) { return 0; }
+int Seal_ActivateUserSystems(void) { return 0; }
+
+// Utils
 #define LEN(arr) (sizeof(arr) / sizeof(arr[0]))
 #define STREQ(a, b) (strcmp((a), (b)) == 0)
 
