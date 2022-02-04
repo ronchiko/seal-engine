@@ -1,6 +1,9 @@
 #pragma once
 
 #include <stdio.h>
+#include <stdlib.h>
+
+#include <seal/debug.h>
 
 // Mocks
 const char *Seal_ProgramName = "Test";
@@ -29,3 +32,7 @@ static int ArrayContainsStr(const char ** array, int len, const char *str) {
 
 	return 0;
 }
+
+#define ASSERT_LEAK if(Seal_LeakCheck()) {\
+ printf("\033[31;1m"__FILE__":%d Memory leak detected\033[0m\n", __LINE__); Seal_DumpLeak(stdout);\
+ result = 1; }
