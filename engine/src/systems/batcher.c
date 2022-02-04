@@ -56,7 +56,7 @@ Seal_BatcherIndex Seal_CreateBatcher2d(Seal_Size vertexSize, Seal_Size limit) {
 	gBatchers[index].usedFP = 0;
 	gBatchers[index].vertecies = malloc(vertexSize * limit);
 	gBatchers[index].vertexSizeFP = vertexSizeFP;
-
+	Seal_Log("LIMIT: %d, %d", limitFP, limit);
 	const Seal_Size gIndeciesLimit = limit * sizeof(GLuint) * 6;
 	GLuint *indecies = malloc(gIndeciesLimit);
 	for(Seal_Size i = 0; i < limit; ++i) {
@@ -76,7 +76,7 @@ Seal_BatcherIndex Seal_CreateBatcher2d(Seal_Size vertexSize, Seal_Size limit) {
 
 	// IBO
 	GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, gBatchers[index].gl.ibo));
-	GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, limit * sizeof(GLuint) * 6, indecies, GL_STATIC_DRAW));
+	GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, gIndeciesLimit, indecies, GL_STATIC_DRAW));
 
 	// VBO
 	GLCall(glBindBuffer(GL_ARRAY_BUFFER, gBatchers[index].gl.vbo));
@@ -85,6 +85,24 @@ Seal_BatcherIndex Seal_CreateBatcher2d(Seal_Size vertexSize, Seal_Size limit) {
 	
 	free(indecies);
 	return index;
+}
+
+
+void Seal_Batcher2dPushColor(Seal_Batcher2d *batcher, Seal_Color color) {
+	if (!batcher) {
+		DBG_WARN("Pushing vector2 to NULL batcher");
+		return;
+	}
+
+	if(batcher->limitFP < batcher->usedFP + 4) {
+		DBG_ERROR("Batcher limit has exceeded");
+		return;
+	}
+
+	for(int i = 0; i < 4; ++i)
+		batcher->vertecies[batcher->usedFP + i] = color.rgba[i];
+
+	batcher->usedFP += 4;
 }
 
 
@@ -128,10 +146,7 @@ void Seal_Batcher2dPushM3(Seal_Batcher2d *batcher, Seal_Matrix3x3 m3) {
 		return;
 	}
 
-	errno_t err = memcpy_s(
-		batcher->vertecies + batcher->usedFP, (batcher->limitFP - batcher->usedFP) * sizeof(Seal_Float), 
-		m3, sizeof(Seal_Matrix3x3)
-	);
+	memcpy(batcher->vertecies + batcher->usedFP, m3, sizeof(Seal_Matrix3x3));
 	batcher->usedFP += 9;
 }
 

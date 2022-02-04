@@ -27,6 +27,6 @@ typedef struct {
 Seal_GL_VBOContext Seal_GL_CreateVBOContext(Seal_GL_VBO vbo, Seal_Size expectedVSize);
 
 void Seal_GL_VBOEnableVArray(Seal_GL_VBOContext *context, Seal_Int attribLoc, Seal_Int count);
-void Seal_GL_VBOEnbaleVArraysMatrix(Seal_GL_VBOContext *context, Seal_Int attribLoc, Seal_Int n);
+void Seal_GL_VBOEnbaleVArraysMatrixNxN(Seal_GL_VBOContext *context, Seal_Int attribLoc, Seal_Int n);
 
 #include "seal/gl/shader.h"

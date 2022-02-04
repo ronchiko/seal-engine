@@ -9,13 +9,13 @@ Seal_ComponentBuffer Seal_GetTransformBuffer(void) {
 }
 
 void Seal_InitTransformBuffer(void) {
-	gTransformBuffer = Seal_CreateComponentBuffer(sizeof(Seal_TransformComponent));
+	gTransformBuffer = Seal_CreateComponentBuffer(sizeof(Seal_Transform2d));
 }
 
-Seal_TransformComponent *Seal_AddTransform(Seal_Entity entity,
+Seal_Transform2d *Seal_AddTransform(Seal_Entity entity,
 	Seal_Vector2 position, float angle, Seal_Vector2 scale) {
 	
-	Seal_TransformComponent transform = {
+	Seal_Transform2d transform = {
 		.base = { 0, 0 },
 		.angle = angle,
 		.position = { position.x, position.y },
@@ -23,7 +23,7 @@ Seal_TransformComponent *Seal_AddTransform(Seal_Entity entity,
 	};
 
 	Seal_AttachComponent(entity, &transform.base);
-	return (Seal_TransformComponent *)Seal_AddComponent(gTransformBuffer, &transform.base);
+	return (Seal_Transform2d *)Seal_AddComponent(gTransformBuffer, &transform.base);
 }
 
 void Seal_RemoveTransform(Seal_Entity e) {

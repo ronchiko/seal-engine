@@ -37,6 +37,7 @@ Seal_Batcher2d *Seal_GetBatcher2d(Seal_BatcherIndex index);
 
 /** Batcher 2d methods **/
 void Seal_Batcher2dPushVector2(Seal_Batcher2d *batcher, Seal_Vector2 vector2);
+void Seal_Batcher2dPushColor(Seal_Batcher2d *batcher, Seal_Color color);
 void Seal_Batcher2dPushInt(Seal_Batcher2d *batcher, Seal_Int texture);
 void Seal_Batcher2dPushM3(Seal_Batcher2d *batcher, Seal_Matrix3x3 m3);
 

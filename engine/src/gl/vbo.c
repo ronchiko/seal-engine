@@ -23,7 +23,7 @@ void Seal_GL_VBOEnableVArray(Seal_GL_VBOContext *context, Seal_Int attribLoc, Se
 		context->vsize * sizeof(Seal_Float));
 }
 
-void Seal_GL_VBOEnbaleVArraysMatrix(Seal_GL_VBOContext *context, Seal_Int attribLoc, Seal_Int n) {
+void Seal_GL_VBOEnbaleVArraysMatrixNxN(Seal_GL_VBOContext *context, Seal_Int attribLoc, Seal_Int n) {
 	for(int i = 0; i < n; ++i) {
 		Seal_GL_VBOEnableVArray(context, attribLoc + i, n);
 	}

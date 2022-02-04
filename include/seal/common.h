@@ -44,5 +44,8 @@ extern Seal_Float Seal_DeltaTime;
 
 inline Seal_Float Seal_Time() {
 	extern Seal_TimeUnit Seal_BeginTime;
-	return clock() / 1000.f - Seal_BeginTime;
+	return (clock() - Seal_BeginTime) / 1000.f;
 }
+
+typedef struct { Seal_Float rgba[4]; } Seal_Color;
+typedef Seal_ID Seal_Texture;

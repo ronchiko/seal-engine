@@ -37,7 +37,9 @@ int main(int argc, char **argv) {
 		Seal_WindowSwapBuffers(window);
 		
 		Seal_DeltaTimeMs = clock() - fs;
-		Seal_DeltaTime /= 1000.f;
+		Seal_DeltaTime = Seal_DeltaTimeMs / 1000.f;
+
+		printf("FPS: %3d\r", (int)(1 / Seal_DeltaTime));
 	}
 
 	Seal_TerminateSystems();

@@ -4,17 +4,17 @@
 
 #include "seal/ecs/component.h"
 
-typedef struct Seal_TransformComponent {
+typedef struct Seal_Transform2d {
 	struct Seal_Component base;
 
 	Seal_Vector2 position;
 	float angle;
 	Seal_Vector2 scale;
-} Seal_TransformComponent;
+} Seal_Transform2d;
 
 void Seal_InitTransformBuffer(void);
 Seal_ComponentBuffer Seal_GetTransformBuffer(void);
 
-Seal_TransformComponent *Seal_AddTransform(Seal_Entity entity,
+Seal_Transform2d *Seal_AddTransform(Seal_Entity entity,
 	Seal_Vector2 position, float angle, Seal_Vector2 scale);
 void Seal_RemoveTransform(Seal_Entity e);
