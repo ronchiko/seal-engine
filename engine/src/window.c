@@ -6,6 +6,8 @@
 
 #include "seal/window.h"
 
+extern void Seal_InitializeInputBuffering(GLFWwindow *window);
+
 struct Seal_Window {
 	GLFWwindow *window;
 	Seal_Size x, y;
@@ -53,6 +55,7 @@ Seal_Window *Seal_CreateWindow(Seal_Size w, Seal_Size h, const char *title, Seal
 	}
 
 	glViewport(0, 0, win->width, win->height);
+	Seal_InitializeInputBuffering(win->window);
 	
 	return win;
 }

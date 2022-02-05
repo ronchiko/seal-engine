@@ -13,6 +13,7 @@ typedef enum {
 } Seal_Bool;
 
 typedef int8_t		Seal_Byte;
+typedef uint8_t		Seal_UByte;
 typedef int32_t  	Seal_Size;
 typedef uint32_t 	Seal_ID;
 

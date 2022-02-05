@@ -4,10 +4,15 @@
 #include "seal.h"
 #include "seal/render2d/batcher.h"
 
-extern int Seal_InitializeUserSystems(void);
-extern int Seal_ActivateUserSystems(void);
+#define APPPROC extern
 
-extern char *Seal_ProgramName;
+APPPROC int Seal_InitializeUserSystems(void);
+APPPROC int Seal_ActivateUserSystems(void);
+
+APPPROC char *Seal_ProgramName;
+
+extern void Seal_FreeInputBuffering(void);
+extern void Seal_UpdateInputBuffers(void);
 
 Seal_TimeUnit Seal_BeginTime, Seal_DeltaTimeMs; 
 Seal_Float Seal_DeltaTime;
@@ -38,10 +43,10 @@ int main(int argc, char **argv) {
 		
 		Seal_DeltaTimeMs = clock() - fs;
 		Seal_DeltaTime = Seal_DeltaTimeMs / 1000.f;
-
-		printf("FPS: %3d\r", (int)(1 / Seal_DeltaTime));
+		Seal_UpdateInputBuffers();
 	}
 
+	Seal_FreeInputBuffering();
 	Seal_TerminateSystems();
 	Seal_FreeAllBatcher2ds();
 
