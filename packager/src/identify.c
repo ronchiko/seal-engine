@@ -1,6 +1,6 @@
 
 #include <string.h>
-#include <seal/fs.h>
+#include <seal/io/fs.h>
 
 #include "packager.h"
 
@@ -21,6 +21,15 @@ static const struct {char *key; Seal_FileGroup group;} EXTENSIONS[] = {
 	{"txt", SEAL_GROUP_GENERIC_TEXT},
 	{"json", SEAL_GROUP_GENERIC_TEXT},
 	{"yaml", SEAL_GROUP_GENERIC_TEXT},
+
+	// Ignore
+	{"pup", SEAL_GROUP_IGNORE},
+	{"zip", SEAL_GROUP_IGNORE},
+	{"exe", SEAL_GROUP_IGNORE},
+	{"dll", SEAL_GROUP_IGNORE},
+	{"lib", SEAL_GROUP_IGNORE},
+	{"obj", SEAL_GROUP_IGNORE},
+	{"o", SEAL_GROUP_IGNORE},
 };
 
 static const int EXTENSIONS_COUNT = sizeof(EXTENSIONS) / sizeof(EXTENSIONS[0]);

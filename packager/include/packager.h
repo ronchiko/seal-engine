@@ -13,7 +13,9 @@ typedef enum {
 	SEAL_GROUP_GENERIC_TEXT,
 	SEAL_GROUP_GENERIC_BIN,
 
-	__SEAL_GROUP_COUNT__
+	__SEAL_GROUP_COUNT__,
+
+	SEAL_GROUP_IGNORE
 } Seal_FileGroup;
 
 typedef struct {	

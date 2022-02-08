@@ -33,7 +33,8 @@ Seal_LookupTable Seal_CreateNewLookup(void) {
 
 	table->archives.alloc = table->archives.count = 0;
 	table->table.alloc = table->table.count = 0;
-	table->archives.raw = (void *)(table->table.raw = NULL);
+	table->archives.raw = NULL;
+	table->table.raw = NULL;
 
 	table->encryptionKey = NULL;
 
@@ -110,14 +111,16 @@ int Seal_LookupGetOrAddArchive(Seal_LookupTable lookup, const char *archive) {
 }
 
 int Seal_LookupAddLookup(Seal_LookupTable lookup, const char *path, int archive) {
-	if(archive < 0 || archive >= lookup->archives.alloc) return 0;
+	if(archive < 0 || archive >= lookup->archives.count) return 0;
 
-	if(lookup->table.alloc <= lookup->archives.count) {
-		lookup->table.raw = realloc(lookup->table.raw, sizeof(Seal_LookupElement) * (lookup->table.alloc += 25));
+	if(lookup->table.alloc <= lookup->table.count) {
+		lookup->table.raw = realloc(lookup->table.raw, sizeof(Seal_LookupElement) * (lookup->table.alloc += 3));
 	}
 
 	lookup->table.raw[lookup->table.count].archive = archive;
-	lookup->table.raw[lookup->table.count++].key = strdup(path);
+	lookup->table.raw[lookup->table.count].key = strdup(path);
+
+	++lookup->table.count;
 
 	return 1;
 }

@@ -1,10 +1,11 @@
 #pragma once
 
 #include <stdlib.h>
+#include <stdio.h>
 #include <string.h>
 #include <zip.h>
 
-#include <seal/fs.h>
+#include <seal/io/fs.h>
 
 #include "argv.h"
 #include "packager.h"
@@ -14,7 +15,7 @@
 
 static const int FILE_ITERATOR_FLAGS = FILE_ITER_RECURSIVE;
 
-static void _NormalizeFileName(char *path, int nbytes) {
+static void _NormalizeFileName(char *path, int nbytes) {	
 	if(nbytes < 0) nbytes = strlen(path);
 	const char *begin = path;
 
@@ -29,6 +30,21 @@ static void _NormalizeFileName(char *path, int nbytes) {
 	}
 }
 
+static char *_ConsumeFile(FILE *fp, zip_uint64_t *length) {
+	char *buffer = NULL;
+	char tbuffer[512];
+	*length = 0;
+
+	for(size_t read; read = fread(tbuffer, sizeof(char), 512, fp);) {
+		buffer = realloc(buffer, (*length + read));
+
+		memmove(buffer + *length, tbuffer, read);
+		*length += read;
+	}
+
+	return buffer;
+}
+
 static void Seal_GroupAssets(Seal_PackagerArgs *args, Seal_AssetArchive *archive) {
 	for(int i = 0; i < args->assets.count; ++i) {
 		LOG(args, "Iterating over path '%s'", args->assets.patterns[i]);
@@ -38,9 +54,11 @@ static void Seal_GroupAssets(Seal_PackagerArgs *args, Seal_AssetArchive *archive
 		while(Seal_FileIteratorNext(iter, path, PATH_MAX_SIZE) >= 0) {
 			Seal_FileGroup group = Seal_GetFileGroup(path, PATH_MAX_SIZE);
 
+			if(group >= __SEAL_GROUP_COUNT__) continue;
+
 			Seal_FileVector *vector = archive->vectors + group;
 			if(vector->count >= vector->alloced)
-				vector->vector = realloc(vector->vector, sizeof(char *) * (vector->alloced += 25));
+				vector->vector = realloc(vector->vector, sizeof(char *) * (vector->alloced += 5));
 			
 			vector->vector[vector->count++] = strdup(path);
 		}
@@ -53,15 +71,18 @@ static zip_t *Seal_CreateZipArchiveForVector(
 	Seal_PackagerArgs *args, Seal_FileVector *vector, Seal_FileGroup group, 
 	const char *oldKey, const char *newKey, Seal_LookupTable lookup
 ) {
-	static const char *NAMES[] = {
-		[SEAL_GROUP_GENERIC_TEXT] = "data.pup",
-		[SEAL_GROUP_SHADER] = "shaders.pup",
-		[SEAL_GROUP_TEXTURE] = "textures.pup",
-		[SEAL_GROUP_GENERIC_BIN] = "generic.pup",
+	static struct {const char *name; const char *readPolicy;} NAMES[] = {
+		[SEAL_GROUP_GENERIC_TEXT] = {"data.pup", 	 "r"},
+		[SEAL_GROUP_SHADER] = 		{"shaders.pup",  "r"},
+		[SEAL_GROUP_TEXTURE] = 		{"textures.pup", "rb"},
+		[SEAL_GROUP_GENERIC_BIN] = 	{"generic.pup",  "rb"},
 	};
 
 	char archiveName[PATH_MAX_SIZE + 1];
-	strncpy(archiveName, NAMES[group], PATH_MAX_SIZE);
+	strncpy(archiveName, NAMES[group].name, PATH_MAX_SIZE);
+	LOG(args, "Creating archive %s", archiveName);
+
+	const char *readPolicy = NAMES[group].readPolicy;
 
 	if(args->exportZips)
 		strncat(archiveName, ".zip", PATH_MAX_SIZE);
@@ -77,6 +98,7 @@ static zip_t *Seal_CreateZipArchiveForVector(
 		return NULL;
 	}
 
+
 	if(args->encrypt && oldKey)
 		zip_set_default_password(zip, oldKey);
 
@@ -87,15 +109,26 @@ static zip_t *Seal_CreateZipArchiveForVector(
 	for(int i = 0; i < vector->count; ++i) {
 		char *name = vector->vector[i];
 		_NormalizeFileName(name, -1);
-		printf("Archiving file %s\n", name);
 
-		if((source = zip_source_file(zip, name, 0, 0)) == NULL) {
-			printf("Failed to add file to zip '%s': %s\n", name, zip_strerror(zip));
-
+		FILE *fp = fopen(name, readPolicy);
+		if(!fp) {
+			printf("Failed to open file, %s\n", name);
 			zip_close(zip);
 			return NULL;
 		}
-		
+
+		zip_uint64_t length = 0;
+		char *fd = _ConsumeFile(fp, &length);
+
+		fclose(fp);
+
+		if((source = zip_source_buffer(zip, fd, length, 0)) == NULL) {
+			printf("Failed to add file to zip '%s': %s\n", name, zip_strerror(zip));
+
+			fclose(fp);
+			zip_close(zip);
+			return NULL;
+		}
 		
 		zip_int64_t index, failed = 0;
 		if((index = zip_name_locate(zip, name, 0)) < 0)
@@ -115,9 +148,13 @@ static zip_t *Seal_CreateZipArchiveForVector(
 
 		if(args->encrypt && newKey)
 			zip_file_set_encryption(zip, index, ZIP_EM_AES_128, newKey);
+
+		free(fd);
 	}
 
-	printf("Created archive at %s\n", archiveName);
+	zip_close(zip);
+	
+	LOG(args, "Created archive at %s", archiveName);
 	return zip;
 }
 
@@ -148,11 +185,8 @@ void Seal_CreateArchive(Seal_PackagerArgs *args) {
 
 	// Create zip files
 	for(int i = 0; i < __SEAL_GROUP_COUNT__; ++i) {
-		zip_t *zip = Seal_CreateZipArchiveForVector(args, archive->vectors + i, (Seal_FileGroup)i, 
+		Seal_CreateZipArchiveForVector(args, archive->vectors + i, (Seal_FileGroup)i, 
 			unlockKey, encryptionKey[0] ? encryptionKey : NULL, lookup);
-		
-		if(zip) 
-			zip_close(zip);
 	}
 
 	LOG(args, "Generating key");
@@ -170,4 +204,11 @@ void Seal_CreateArchive(Seal_PackagerArgs *args) {
 	Seal_WriteLookup(lookup, lookupPath);
 
 	LOG(args, "Done creating archive");
+	for(int i = 0; i < __SEAL_GROUP_COUNT__; ++i) {
+		for(int j = 0; j < archive->vectors[i].count; ++j)
+			free(archive->vectors[i].vector[j]);
+		
+		free(archive->vectors[i].vector);
+	}
+	free(archive);
 }

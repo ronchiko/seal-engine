@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <zip.h>
-#include <seal/fs.h>
+#include <seal/io/fs.h>
 
 #include "config.h"
 
@@ -28,8 +28,10 @@ int main(int argc, char *argv[]) {
 		
 	// Run packager
 	Seal_CreateArchive(args);
+	Seal_DumpLeak(stdout);
 
 	// Generate lookup
 	Seal_FreeArgv(args);
+	printf("Generated assets successfully");
 	return 0;
 }

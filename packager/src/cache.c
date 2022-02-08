@@ -2,7 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include <seal/fs.h>
+#include <seal/io/fs.h>
 
 #include "cache.h"
 
