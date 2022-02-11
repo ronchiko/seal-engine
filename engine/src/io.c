@@ -82,7 +82,7 @@ char *_SealIO_ReadFile(const char *path, const char *readPolicy, Seal_Size *len)
 
 	FILE *file = fopen(path, readPolicy);
 	if (!file) {
-		Seal_LogError("Failed to open file '%s'", SEAL_TRUE, path);
+		Seal_LogError("Failed to open file '%s'", SEAL_FALSE, path);
 		return NULL;
 	}
 

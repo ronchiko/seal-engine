@@ -7,12 +7,33 @@
 
 #define SEAL_TEXTURE_RESERVED_LOADER	SEAL_NO_TEXTURE_INDEX
 
+static Seal_TextureId gFallbackTexture = 0;
+static int gFallbackTextureData[4] = {
+	0xFFFF00FF, 0xFF202020,
+	0xFF202020, 0xFFFF00FF,
+};
+
+static Seal_TextureId _LoadFallbackTexture(void) {
+	if (gFallbackTexture <= 0) {
+		GLCall(glEnable(GL_TEXTURE_2D));
+		GLCall(glPixelStorei(GL_UNPACK_ALIGNMENT, 1));
+		
+		GLCall(glGenTextures(1, &gFallbackTexture));
+
+		GLCall(glBindTexture(GL_TEXTURE_2D, gFallbackTexture));
+		GLCall(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 2, 2, 0, GL_RGBA, GL_UNSIGNED_BYTE, gFallbackTextureData));
+		GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST));
+		GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST));
+	}
+	return gFallbackTexture;
+} 
+
 
 Seal_TextureId Seal_CreateTextureFromAsset(const char *path) {
 	Seal_Image img = Seal_LoadImage(path);
 	if(!img.buffer || img.width <= 0 || img.height <= 0) {
-		Seal_LogError("Failed to load texture %s", SEAL_FALSE, path);
-		return 0;
+		Seal_LogError("Failed to load texture %s, Reverting to fallback", SEAL_FALSE, path);
+		return _LoadFallbackTexture();
 	}
 
 	GLCall(glEnable(GL_TEXTURE_2D));
@@ -32,6 +53,7 @@ Seal_TextureId Seal_CreateTextureFromAsset(const char *path) {
 }
 
 void Seal_FreeTexture(Seal_TextureId texture) {
-	glDeleteTextures(1, &texture);
+	if(texture != gFallbackTexture)
+		glDeleteTextures(1, &texture);
 }
 
