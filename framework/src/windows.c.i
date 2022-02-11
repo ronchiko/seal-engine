@@ -75,8 +75,10 @@ skip_file:
 	if(iterator->findData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {	// Got directory		
 		snprintf(path, n, "%s/%s", iterator->root, iterator->findData.cFileName);
 
-		if(iterator->flags & FILE_ITER_RECURSIVE)	// In case recursion is on then create child iterator
+		if(iterator->flags & FILE_ITER_RECURSIVE) {	// In case recursion is on then create child iterator
+			Seal_FreeFileIterator(iterator->child);
 			iterator->child = Seal_CreateFileIterator(path, iterator->flags);
+		}
 
 		if(!FindNextFile(iterator->findHandle, &iterator->findData)) iterator->closed = true;
 
@@ -87,10 +89,13 @@ skip_file:
 
 	snprintf(path, n, "%s/%s", iterator->root, iterator->findData.cFileName);
 	if(!FindNextFile(iterator->findHandle, &iterator->findData)) iterator->closed = true;
+	
 	return FILE_ITER_RESULT_FILE;
 }
 
 void Seal_FreeFileIterator(Seal_FileIterator iter) {
+	if(!iter) return;
+	
 	FindClose(iter->findHandle);
 	if(iter->child) {
 		Seal_FreeFileIterator(iter->child);

@@ -2,8 +2,15 @@
 
 #include "seal/common.h"
 
-#include "seal/input.h"
-#include "seal/fs.h"
+#include "seal/io/input.h"
+#include "seal/io/img.h"
+#include "seal/io/fs.h"
+
+typedef struct  {
+	Seal_Size length;
+	char *data;
+} Seal_File;
 
 /* \brief This function open a file and dumps its content into a string */
-char *SealIO_ReadFile(const char *path);
+Seal_File SealIO_ReadFile(const char *path);
+Seal_File SealIO_ReadFileRaw(const char *path);

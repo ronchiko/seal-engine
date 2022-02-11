@@ -2,9 +2,12 @@
 
 #include "seal/common.h"
 
-typedef struct Seal_Vector2 {
-	Seal_Float x;
-	Seal_Float y;
+typedef union Seal_Vector2 {
+	struct {
+		Seal_Float x;
+		Seal_Float y;
+	};
+	Seal_Float array[2];
 } Seal_Vector2;
 
 Seal_Vector2 Seal_V2V2Add(Seal_Vector2 a, Seal_Vector2 b);

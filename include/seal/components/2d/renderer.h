@@ -1,5 +1,6 @@
 #pragma once
 
+#include "seal/math.h"
 #include "seal/ecs/component.h"
 
 typedef struct Seal_Renderer2d {
@@ -8,7 +9,8 @@ typedef struct Seal_Renderer2d {
 	Seal_Bool skip;
 
 	Seal_Color tint;
-	Seal_Texture textureId;
+	Seal_Vector4 uv;
+	Seal_TextureId textureId;
 } Seal_Renderer2d;
 
 

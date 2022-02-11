@@ -49,4 +49,3 @@ inline Seal_Float Seal_Time() {
 }
 
 typedef struct { Seal_Float rgba[4]; } Seal_Color;
-typedef Seal_ID Seal_Texture;

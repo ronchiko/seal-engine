@@ -18,7 +18,8 @@ Seal_Renderer2d *Seal_AddRenderer2d(Seal_Entity entity, Seal_GL_Program program)
 	Seal_Renderer2d r2d = {
 		.base = { 0, 0 },
 		.skip = SEAL_FALSE,
-		.tint = { 255, 255, 255, 255 },
+		.tint = { 1.f, 1.f, 1.f, 1.f },
+		.uv = { 0, 0, 1, 1 },
 		.textureId = 0
 	};
 

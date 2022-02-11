@@ -4,8 +4,13 @@
 
 #include "common.h"
 
+#ifdef _DEBUG
 #define GLCall(fnc)	{ fnc; GLenum err = glGetError(); if(err != GL_NO_ERROR) \
 	{ Seal_LogError("Error while executing '"#fnc"' %s\n", SEAL_TRUE, glewGetErrorString(err)); } }
+#else
+#define GLCall(fnc) fnc;
+#endif
+
 
 #define NO_PROGRAM 		0
 #define NO_SHADER		0
@@ -30,3 +35,4 @@ void Seal_GL_VBOEnableVArray(Seal_GL_VBOContext *context, Seal_Int attribLoc, Se
 void Seal_GL_VBOEnbaleVArraysMatrixNxN(Seal_GL_VBOContext *context, Seal_Int attribLoc, Seal_Int n);
 
 #include "seal/gl/shader.h"
+#include "seal/gl/texture.h"

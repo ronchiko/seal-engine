@@ -20,7 +20,7 @@ inline static GLuint Seal_GL_GLType2ShaderType(Seal_GL_ShaderType type) {
 Seal_GL_Shader Seal_GL_CompileShader(const char *source, Seal_GL_ShaderType type) {
 	GLuint _shader = glCreateShader(Seal_GL_GLType2ShaderType(type));
 	
-	char *_source = SealIO_ReadFile(source);
+	char *_source = SealIO_ReadFile(source).data;
 	glShaderSource(_shader, 1, (const GLchar **)&_source, NULL);
 	glCompileShader(_shader);
 	free(_source);
@@ -103,6 +103,16 @@ void Seal_GL_DestroyProgram(Seal_GL_Program prg) {
 
 Seal_Int Seal_GL_ProgramAttribLocation(Seal_GL_Program program, const char *name) {
 	GLint offset = glGetAttribLocation(program, name);
+	if (offset < 0) {
+		Seal_LogError("Failed to find attribute '%s' in program %d", SEAL_FALSE, name, program);
+		return -1;
+	}
+
+	return offset;
+}
+
+Seal_Int Seal_GL_ProgramUniformLocation(Seal_GL_Program program, const char *name) {
+	GLint offset = glGetUniformLocation(program, name);
 	if (offset < 0) {
 		Seal_LogError("Failed to find attribute '%s' in program %d", SEAL_FALSE, name, program);
 		return -1;

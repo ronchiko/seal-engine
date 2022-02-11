@@ -6,7 +6,6 @@
 #include "seal/math.h"
 
 // Engine
-#include "seal/fs.h"
 #include "seal/gl.h"
 #include "seal/window.h"
 #include "seal/ecs/component.h"

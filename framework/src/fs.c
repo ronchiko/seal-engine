@@ -2,11 +2,11 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <seal/fs.h>
+#include <seal/io/fs.h>
 
 int Seal_GetFileName(const char *path, int maxPathLen, char *buf, int bufSize) {
 	const char *lastSperator = path;
-	
+
 	for(int i = 0; i < maxPathLen && *path; ++path, ++i) {
 		if(*path == '/' || *path == '\\') lastSperator = path;
 	}

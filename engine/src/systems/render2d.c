@@ -9,7 +9,8 @@
 
 #include "seal/render2d/batcher.h"
 
-static Seal_BatcherIndex gBatcher; 
+static Seal_BatcherIndex gBatcher;
+static Seal_Int gTextureUniformLoc;
 
 struct {
 	Seal_GL_Shader vertex;
@@ -27,6 +28,12 @@ void Seal_Renderer2dSystem(Seal_Component **components, const Seal_Size count) {
 	static const Seal_Vector2 quad[4] = {
 		{-0.5f, -0.5f}, {0.5f, -0.5f}, {0.5f, 0.5f}, {-0.5f, 0.5f}
 	};
+	static const Seal_Float uvs[8] = {
+		0, 0,
+		1, 0,
+		1, 1,
+		0, 1
+	};
 
 	Seal_Transform2d *transform = (Seal_Transform2d *)components[transformOffset];
 	Seal_Renderer2d *renderer = (Seal_Renderer2d *)components[rendererOffset];
@@ -41,15 +48,24 @@ void Seal_Renderer2dSystem(Seal_Component **components, const Seal_Size count) {
 	Seal_Batcher2d *batcher = Seal_GetBatcher2d(gBatcher);
 
 	for(int i = 0; i < 4; ++i) {
-		Seal_Batcher2dPushVector2(batcher, quad[i]);
+		Seal_Batcher2dPushVector2(batcher, quad[i]);	
+		Seal_Batcher2dPushVector2(batcher, (Seal_Vector2){
+			uvs[i * 2], 
+			uvs[i * 2 + 1]
+		});
+
 		Seal_Batcher2dPushM3(batcher, matrix);
-		Seal_Batcher2dPushColor(batcher, renderer->tint);
-	}	
+		Seal_Batcher2dPushColor(batcher, renderer->tint);		
+	}
 }
 
 void Seal_Renderer2dFinalize(void) {
 	Seal_Batcher2d *batcher = Seal_GetBatcher2d(gBatcher);
 	Seal_GL_UseProgram(gGLDefaults.program);
+
+	glActiveTexture(GL_TEXTURE1);
+	GLCall(glBindTexture(GL_TEXTURE_2D, 1));
+	glUniform1i(gTextureUniformLoc, 1);
 
 	Seal_Batcher2dUpload(batcher);
 }
@@ -65,9 +81,14 @@ void Seal_Renderer2dCleanup(void) {
 void Seal_ActivateRender2dSystem(void) {
 	typedef struct {
 		Seal_Vector2 vertex;
+		Seal_Vector2 uv;
 		Seal_Matrix3x3 transform;
 		Seal_Color color;
 	} Vertex;
+
+	GLCall(glEnable(GL_TEXTURE_2D));
+	GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
+	GLCall(glEnable(GL_BLEND));
 
 	if(gGLDefaults.program == SEAL_GL_NO_PROGRAM) {
 		gGLDefaults.vertex = Seal_GL_CompileShader  ("assets/shaders/vertex.glsl", SEAL_SHADER_VERTEX);
@@ -94,10 +115,17 @@ void Seal_ActivateRender2dSystem(void) {
 
 	gBatcher = Seal_CreateBatcher2d(sizeof(Vertex), 4000);
 
+	Seal_GL_UseProgram(gGLDefaults.program);
+
 	Seal_Int vertexLoc 	= Seal_GL_ProgramAttribLocation(gGLDefaults.program, "vertex");
 	Seal_Int matrixLoc 	= Seal_GL_ProgramAttribLocation(gGLDefaults.program, "transform");
 	Seal_Int colorLoc 	= Seal_GL_ProgramAttribLocation(gGLDefaults.program, "color");
-	if(vertexLoc < 0 || matrixLoc < 0 || colorLoc < 0) {
+	Seal_Int uvLoc 		= Seal_GL_ProgramAttribLocation(gGLDefaults.program, "uv");
+	
+	gTextureUniformLoc = Seal_GL_ProgramUniformLocation(gGLDefaults.program, "texture");
+	Seal_Log("%d", gTextureUniformLoc);
+
+	if(vertexLoc < 0 || matrixLoc < 0 || colorLoc < 0 || uvLoc < 0 || gTextureUniformLoc < 0) {
 		Seal_LogError("Failed to loaded shader, missing attributes", SEAL_FALSE);
 		return;
 	}
@@ -106,6 +134,7 @@ void Seal_ActivateRender2dSystem(void) {
 	if((glVbo = Seal_Batcher2dGetVBOContext(gBatcher)).vbo >= 0) {
 		
 		Seal_GL_VBOEnableVArray(&glVbo, vertexLoc, 2);
+		Seal_GL_VBOEnableVArray(&glVbo, uvLoc, 2);
 		Seal_GL_VBOEnbaleVArraysMatrixNxN(&glVbo, matrixLoc, 3);
 		Seal_GL_VBOEnableVArray(&glVbo, colorLoc, 4);
 	}

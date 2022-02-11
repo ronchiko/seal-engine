@@ -26,6 +26,7 @@ float Seal_FastInverseSqrt(float n);
 
 // Additional maths
 #include "seal/math/vector2.h"
+#include "seal/math/vector4.h"
 
 #include "seal/math/rect.h"
 

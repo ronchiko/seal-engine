@@ -80,10 +80,32 @@ cleanup:
 	return result;
 } 
 
+int TestReallocate_WhenResizingBuffer(void) {
+	int result = 0;
+
+	int *buffer = NULL, length = 0;
+	for(int i = 0; i < 16; ++i) {
+		if (i >= length) {
+			buffer = realloc(buffer, sizeof(int) * (length += 4));
+		}
+
+		buffer[i] = i;
+	}
+	
+	for(int i = 0; i < 16; ++i) ASSERT(buffer[i] == i);
+
+	free(buffer);
+cleanup:
+	ASSERT_LEAK;
+	Seal_CleanDebugData();
+	return result;
+} 
+
 int main() {
 	int result = 0;
 	RUN_TEST(TestAllocate_WhenMemoryUnfreed_ThenRaiseLeak);
 	RUN_TEST(TestCleanAllocate_WhenAllocatedThenClean);
+	RUN_TEST(TestReallocate_WhenResizingBuffer);
 
 	RUN_TEST(TestAllocate_WhenMassCalled);
 	RUN_TEST(TestReallocate_WhenLargeDataOverTime);

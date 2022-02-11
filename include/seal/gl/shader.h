@@ -25,6 +25,7 @@ void Seal_GL_DestroyProgram(Seal_GL_Program id);
 void Seal_GL_DestroyShader(Seal_GL_Shader shader);
 
 Seal_Int Seal_GL_ProgramAttribLocation(Seal_GL_Program progam, const char *name);
+Seal_Int Seal_GL_ProgramUniformLocation(Seal_GL_Program progam, const char *name);
 
 Seal_GL_Program Seal_GL_DefaultProgram(void);
 void Seal_GL_UseProgram(Seal_GL_Program);

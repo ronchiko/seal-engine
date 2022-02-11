@@ -1,7 +1,7 @@
 
 #include <stdlib.h>
 
-#include <seal/fs.h>
+#include <seal/io/fs.h>
 #include <seal/testing/suite.h>
 
 int TestFileIterator_WhenNoFlagsOn() {

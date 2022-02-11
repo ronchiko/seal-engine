@@ -146,7 +146,7 @@ void *Seal_DbgReallocate(void *addr, size_t size, const char *file, int line) {
 		if(*aAddr != addr) continue;
 		
 		*aAddr = NULL;
-		addr = realloc(*aAddr, size);
+		addr = realloc(addr, size);
 		if(!addr) {
 			Seal_LogError("Out of memory", SEAL_FALSE);
 			goto cleanup;

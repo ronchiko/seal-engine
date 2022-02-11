@@ -4,7 +4,7 @@
 #include <GLFW/glfw3.h>
 
 #include <seal/common.h>
-#include <seal/input.h>
+#include <seal/io/input.h>
 
 typedef enum Seal_KeyActionType {
 	SEAL_ACTION_UNASSINGED,
@@ -134,7 +134,7 @@ _BUTTON_STATE_FNC(Up, SEAL_INPUT_UP);
 
 float Seal_GetAxis(Seal_KeyBinding id) {
 	if (gBindings[id].type != SEAL_KEY_ACTION_AXIS) return 0;
-	glfw
+	
 	Seal_KeySet posSet = gBindings[id].axis.positive; 
 	Seal_KeySet negSet = gBindings[id].axis.negative; 
 
