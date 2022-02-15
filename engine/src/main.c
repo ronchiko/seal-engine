@@ -48,7 +48,6 @@ int main(int argc, char **argv) {
 
 	Seal_FreeInputBuffering();
 	Seal_TerminateSystems();
-	Seal_FreeAllBatcher2ds();
 
 	Seal_DestroyWindow(window);
 

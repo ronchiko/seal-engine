@@ -29,7 +29,7 @@ void Seal_ReadRGBA(Seal_Image *img, png_structrp png, png_inforp info, Seal_Bool
 	const uint32_t totalBytes = img->depth * img->height * img->width * sizeof(Seal_Float) - 1;
 	png_bytep bytes = malloc(bpr);
 	
-	for(Seal_Size row = img->height - 1; row >= 0; --row) {
+	for(Seal_Size row = 0; row < img->height; ++row) {
 		png_read_row(png, bytes, NULL);
 		const png_uint_32 offset = row * img->width;
 

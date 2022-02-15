@@ -17,13 +17,15 @@ inline static GLuint Seal_GL_GLType2ShaderType(Seal_GL_ShaderType type) {
 	}
 }  
 
-Seal_GL_Shader Seal_GL_CompileShader(const char *source, Seal_GL_ShaderType type) {
-	GLuint _shader = glCreateShader(Seal_GL_GLType2ShaderType(type));
+Seal_GL_Shader Seal_GL_CompileShaderRaw(const char *source, Seal_GL_ShaderType type) {
+	if (!source) {
+		return (Seal_GL_Shader){ .id = SEAL_GL_NO_SHADER, .type = type };
+	}
 	
-	char *_source = SealIO_ReadFile(source).data;
-	glShaderSource(_shader, 1, (const GLchar **)&_source, NULL);
+	GLuint _shader = glCreateShader(Seal_GL_GLType2ShaderType(type));
+
+	glShaderSource(_shader, 1, (const GLchar **)&source, NULL);
 	glCompileShader(_shader);
-	free(_source);
 
 	GLuint successful;
 	glGetShaderiv(_shader, GL_COMPILE_STATUS, &successful);
@@ -42,6 +44,19 @@ Seal_GL_Shader Seal_GL_CompileShader(const char *source, Seal_GL_ShaderType type
 	}
 
 	return (Seal_GL_Shader){ .id = _shader, .type = type };
+}
+
+Seal_GL_Shader Seal_GL_CompileShader(const char *source, Seal_GL_ShaderType type) {
+	char *_source = SealIO_ReadFile(source).data;
+	if (!_source) {
+		Seal_LogError("Failed to read shader '%s'", SEAL_FALSE, source);
+		return (Seal_GL_Shader){ .id = SEAL_GL_NO_SHADER, .type = type };
+	}
+	
+	Seal_GL_Shader shader = Seal_GL_CompileShaderRaw(_source, type);
+	free(_source);
+	
+	return shader;
 }
 
 Seal_GL_Program Seal_GL_LinkProgram(Seal_GL_Shader vrt, Seal_GL_Shader frg){
@@ -102,7 +117,8 @@ void Seal_GL_DestroyProgram(Seal_GL_Program prg) {
 }
 
 Seal_Int Seal_GL_ProgramAttribLocation(Seal_GL_Program program, const char *name) {
-	GLint offset = glGetAttribLocation(program, name);
+	GLint offset;
+	GLCall(offset = glGetAttribLocation(program, name));
 	if (offset < 0) {
 		Seal_LogError("Failed to find attribute '%s' in program %d", SEAL_FALSE, name, program);
 		return -1;
@@ -112,7 +128,9 @@ Seal_Int Seal_GL_ProgramAttribLocation(Seal_GL_Program program, const char *name
 }
 
 Seal_Int Seal_GL_ProgramUniformLocation(Seal_GL_Program program, const char *name) {
-	GLint offset = glGetUniformLocation(program, name);
+	GLint offset;
+	GLCall(offset = glGetUniformLocation(program, name));
+
 	if (offset < 0) {
 		Seal_LogError("Failed to find attribute '%s' in program %d", SEAL_FALSE, name, program);
 		return -1;

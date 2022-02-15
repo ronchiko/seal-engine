@@ -7,6 +7,7 @@ typedef struct Seal_Renderer2d {
 	Seal_Component base;
 
 	Seal_Bool skip;
+	Seal_GL_Program program;
 
 	Seal_Color tint;
 	Seal_Vector4 uv;
