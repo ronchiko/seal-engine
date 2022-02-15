@@ -37,8 +37,6 @@ void Seal_LogWarning(const char *fmt, ...);
 void Seal_LogError(const char *fmt, ...);
 void Seal_LogFatal(const char *fmt, ...);
 
-void Seal_LogResetState(void);
-
 #pragma endregion
 
 void *Seal_DeepCopy(void *src, size_t size);
