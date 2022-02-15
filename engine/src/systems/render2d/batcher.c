@@ -38,7 +38,7 @@ static Seal_Bool _PrepareBatcherGl(Seal_Batcher2d *b2d, Seal_GL_Program program)
 	
 	b2d->uniforms.texture = Seal_GL_ProgramUniformLocation(program, SEAL_SHADER_TEXTURE_PARAM);
 	if(b2d->uniforms.texture < 0) {
-		Seal_LogError("Uniform 'Seal_Texture' is required for each shader", SEAL_FALSE);
+		Seal_LogError("Uniform 'Seal_Texture' is required for each shader");
 		return SEAL_FALSE;
 	}
 
@@ -51,7 +51,7 @@ static Seal_Bool _PrepareBatcherGl(Seal_Batcher2d *b2d, Seal_GL_Program program)
 	for(int i = 0; i < 4; ++i)
 		if(required[i] >= required[i + 1] || required[i] < 0) {
 			Seal_LogError("Program %d doesn't match the required shader parameter for the Render2d system", 
-				SEAL_FALSE, program);
+				program);
 			return SEAL_FALSE;
 		}
 

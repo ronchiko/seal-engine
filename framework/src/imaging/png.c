@@ -59,7 +59,7 @@ Seal_Bool Seal_LoadPngImage(Seal_Image *img, const char *path) {
 	memcpy(signature, file.data, ePngSignatureLen * sizeof(char));
 
 	if (!png_check_sig(signature, ePngSignatureLen)) {
-		Seal_LogError("%s PNG has invalid signature", SEAL_FALSE, path);
+		Seal_LogError("%s PNG has invalid signature", path);
 		goto failure;
 	}
 
@@ -75,7 +75,7 @@ Seal_Bool Seal_LoadPngImage(Seal_Image *img, const char *path) {
 	}
 	
 	if (setjmp(png_jmpbuf(pngPtr))) {
-		Seal_LogError("Failed to read PNG %s", SEAL_FALSE, path);
+		Seal_LogError("Failed to read PNG %s", path);
 		goto failure;
 	}
 
@@ -112,7 +112,7 @@ Seal_Bool Seal_LoadPngImage(Seal_Image *img, const char *path) {
 		Seal_ReadRGBA(img, pngPtr, pngInfo, SEAL_FALSE);
 		break;
 	default:
-		Seal_LogError("Invalid color type %d for PNG %s", SEAL_FALSE, colorType, path);
+		Seal_LogError("Invalid color type %d for PNG %s", colorType, path);
 		break;
 	}
 
@@ -120,7 +120,7 @@ Seal_Bool Seal_LoadPngImage(Seal_Image *img, const char *path) {
 	return SEAL_TRUE;
 
 failure:
-	Seal_LogError("Failed to load PNG '%s'", SEAL_FALSE, path);
+	Seal_LogError("Failed to load PNG '%s'", path);
 	free(file.data);
 	return SEAL_FALSE;
 }

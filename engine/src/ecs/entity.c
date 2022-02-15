@@ -23,7 +23,7 @@ void Seal_PurgeEntity(Seal_Entity id) {
 Seal_ID Seal_AttachComponent(Seal_Entity entity, Seal_Component *component) {
 	static Seal_ID gLastComponentId = 0;
 	if (entity < 0 || entity > gLastEntity) {
-		Seal_LogError("Invalid entity %zu", SEAL_FALSE, entity);
+		Seal_LogError("Invalid entity %zu", entity);
 		return -1;
 	}
 

@@ -27,7 +27,7 @@ int main(int argc, char **argv) {
 
 	Seal_InitTransformBuffer();
 	if(Seal_InitializeUserSystems()) {
-		Seal_LogError("Failed to initialize user systems", SEAL_TRUE);
+		Seal_LogFatal("Failed to initialize user systems");
 		return 1;
 	}
 	

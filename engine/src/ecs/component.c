@@ -91,7 +91,7 @@ static Seal_Size Seal_FindComponentWithId(Seal_Byte *buf, Seal_Int begin, Seal_I
 
 Seal_Component *Seal_AddComponent(Seal_ComponentBuffer buffer, const Seal_Component *component) {
 	if(!component || buffer < 0 || buffer >= (Seal_ID)gBuffers.used) {
-		Seal_LogError("%zu is not a valid component buffer", SEAL_FALSE, buffer);
+		Seal_LogError("%zu is not a valid component buffer", buffer);
 		return SEAL_ID_INVALID;
 	}
 

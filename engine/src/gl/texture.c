@@ -32,7 +32,7 @@ static Seal_TextureId _LoadFallbackTexture(void) {
 Seal_TextureId Seal_CreateTextureFromAsset(const char *path) {
 	Seal_Image img = Seal_LoadImage(path);
 	if(!img.buffer || img.width <= 0 || img.height <= 0) {
-		Seal_LogError("Failed to load texture %s, Reverting to fallback", SEAL_FALSE, path);
+		Seal_LogError("Failed to load texture %s, Reverting to fallback", path);
 		return _LoadFallbackTexture();
 	}
 

@@ -59,12 +59,12 @@ Seal_Image Seal_LoadImage(const char *path) {
 	switch(format) {
 	case SEAL_PNG:
 		if(!Seal_LoadPngImage(&img, path)) {
-			Seal_LogError("Failed to open PNG file", SEAL_FALSE);
+			Seal_LogError("Failed to open PNG file");
 			break;
 		}
 		break;
 	default:
-		Seal_LogError("Invalid file format!", SEAL_FALSE);
+		Seal_LogError("Invalid file format!");
 		break;
 	}
 

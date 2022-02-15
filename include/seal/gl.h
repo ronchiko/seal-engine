@@ -6,7 +6,7 @@
 
 #ifdef _DEBUG
 #define GLCall(fnc)	{ fnc; GLenum err = glGetError(); if(err != GL_NO_ERROR) \
-	{ Seal_LogError("Error while executing '"#fnc"' %s\n", SEAL_TRUE, glewGetErrorString(err)); } }
+	{ Seal_LogFatal("Error while executing '"#fnc"' %s\n", glewGetErrorString(err)); } }
 #else
 #define GLCall(fnc) fnc;
 #endif

@@ -39,19 +39,19 @@ static char *_OpenFileFromArchive(const char *archiveName, const char *path, Sea
 	int errorp;
 	zip_t *archive = zip_open(archiveName, ZIP_RDONLY, &errorp);
 	if(!archive) {
-		Seal_LogError("Failed to open file %s from archive", SEAL_FALSE, path);
+		Seal_LogError("Failed to open file %s from archive", path);
 		return NULL;
 	}
 
 	zip_file_t *source = zip_fopen(archive, path, 0);
 	if(!source) {
-		Seal_LogError("Failed to open file %s from archive, %s", SEAL_FALSE, path, zip_strerror(archive));
+		Seal_LogError("Failed to open file %s from archive, %s", path, zip_strerror(archive));
 		return NULL;
 	}
 
 	zip_stat_t stats = { 0 };
 	if(zip_stat(archive, path, ZIP_STAT_SIZE, &stats)) {
-		Seal_LogError("Failed to read data on file %s from archive, %s", SEAL_FALSE, path, zip_strerror(archive));
+		Seal_LogError("Failed to read data on file %s from archive, %s", path, zip_strerror(archive));
 		return NULL;
 	}
 	
@@ -59,12 +59,12 @@ static char *_OpenFileFromArchive(const char *archiveName, const char *path, Sea
 
 	char *buffer = malloc((stats.size + 1) * sizeof(char));
 	if(!buffer) {
-		Seal_LogError("Out of memory, expected  size of file %s is %zu", SEAL_FALSE, path, stats.size);
+		Seal_LogError("Out of memory, expected  size of file %s is %zu", path, stats.size);
 		return NULL;
 	}
 
 	if(zip_fread(source, buffer, stats.size) < 0) {
-		Seal_LogError("Failed to read file %s", SEAL_FALSE, path);
+		Seal_LogError("Failed to read file %s", path);
 		return NULL;
 	}
 	buffer[stats.size] = 0;
@@ -82,7 +82,7 @@ char *_SealIO_ReadFile(const char *path, const char *readPolicy, Seal_Size *len)
 
 	FILE *file = fopen(path, readPolicy);
 	if (!file) {
-		Seal_LogError("Failed to open file '%s'", SEAL_FALSE, path);
+		Seal_LogError("Failed to open file '%s'", path);
 		return NULL;
 	}
 

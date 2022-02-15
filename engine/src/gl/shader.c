@@ -30,7 +30,7 @@ Seal_GL_Shader Seal_GL_CompileShaderRaw(const char *source, Seal_GL_ShaderType t
 	GLuint successful;
 	glGetShaderiv(_shader, GL_COMPILE_STATUS, &successful);
 	if(successful != GL_TRUE) {
-		Seal_LogError("Failed create shader from '%s'", SEAL_FALSE, source);
+		Seal_LogError("Failed create shader from '%s'", source);
 
 		GLint messageLength, realLength;
 		glGetShaderiv(_shader, GL_INFO_LOG_LENGTH, &messageLength);
@@ -49,7 +49,7 @@ Seal_GL_Shader Seal_GL_CompileShaderRaw(const char *source, Seal_GL_ShaderType t
 Seal_GL_Shader Seal_GL_CompileShader(const char *source, Seal_GL_ShaderType type) {
 	char *_source = SealIO_ReadFile(source).data;
 	if (!_source) {
-		Seal_LogError("Failed to read shader '%s'", SEAL_FALSE, source);
+		Seal_LogError("Failed to read shader '%s'", source);
 		return (Seal_GL_Shader){ .id = SEAL_GL_NO_SHADER, .type = type };
 	}
 	
@@ -62,11 +62,11 @@ Seal_GL_Shader Seal_GL_CompileShader(const char *source, Seal_GL_ShaderType type
 Seal_GL_Program Seal_GL_LinkProgram(Seal_GL_Shader vrt, Seal_GL_Shader frg){
 	GLuint program = glCreateProgram();
 	if (vrt.type != SEAL_SHADER_VERTEX) {
-		Seal_LogError("Shader %d is not a vertex shader", SEAL_FALSE, vrt.id);
+		Seal_LogError("Shader %d is not a vertex shader", vrt.id);
 		return 0;
 	}
 	if (frg.type != SEAL_SHADER_FRAGMENT) {
-		Seal_LogError("Shader %d is not a fragment shader", SEAL_FALSE, frg.id);
+		Seal_LogError("Shader %d is not a fragment shader", frg.id);
 		return 0;
 	}
 
@@ -120,7 +120,7 @@ Seal_Int Seal_GL_ProgramAttribLocation(Seal_GL_Program program, const char *name
 	GLint offset;
 	GLCall(offset = glGetAttribLocation(program, name));
 	if (offset < 0) {
-		Seal_LogError("Failed to find attribute '%s' in program %d", SEAL_FALSE, name, program);
+		Seal_LogError("Failed to find attribute '%s' in program %d", name, program);
 		return -1;
 	}
 
@@ -132,7 +132,7 @@ Seal_Int Seal_GL_ProgramUniformLocation(Seal_GL_Program program, const char *nam
 	GLCall(offset = glGetUniformLocation(program, name));
 
 	if (offset < 0) {
-		Seal_LogError("Failed to find attribute '%s' in program %d", SEAL_FALSE, name, program);
+		Seal_LogError("Failed to find attribute '%s' in program %d", name, program);
 		return -1;
 	}
 

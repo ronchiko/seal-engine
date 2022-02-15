@@ -30,9 +30,16 @@ typedef float 		Seal_Float;
 Seal_Bool Seal_Init(void);
 void Seal_Close(void);
 
+#pragma region Logging
+
 void Seal_Log(const char *fmt, ...);
-void Seal_LogError(const char *fmt, Seal_Bool fatal, ...);
 void Seal_LogWarning(const char *fmt, ...);
+void Seal_LogError(const char *fmt, ...);
+void Seal_LogFatal(const char *fmt, ...);
+
+void Seal_LogResetState(void);
+
+#pragma endregion
 
 void *Seal_DeepCopy(void *src, size_t size);
 

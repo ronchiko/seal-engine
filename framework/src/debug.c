@@ -148,7 +148,7 @@ void *Seal_DbgReallocate(void *addr, size_t size, const char *file, int line) {
 		*aAddr = NULL;
 		addr = realloc(addr, size);
 		if(!addr) {
-			Seal_LogError("Out of memory", SEAL_FALSE);
+			Seal_LogError("Out of memory");
 			goto cleanup;
 		}
 
@@ -160,7 +160,7 @@ void *Seal_DbgReallocate(void *addr, size_t size, const char *file, int line) {
 		return addr;
 	}
 
-	Seal_LogError("Failed to realloc object", SEAL_FALSE);
+	Seal_LogError("Failed to realloc object");
 cleanup:
 	_MUT_FREE(gMemorySetMutex);
 	return NULL;

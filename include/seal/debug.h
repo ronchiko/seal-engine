@@ -22,12 +22,12 @@ void Seal_DumpLeak(void *stream);
 void Seal_CleanDebugData(void);
 
 #define DBG_WARN(msg, ...)   Seal_LogWarning("%s:%d: "##msg, __FILE__, __LINE__, __VA_ARGS__)
-#define DBG_ERROR(msg, ...)  Seal_LogError("%s:%d: "##msg, SEAL_FALSE, __FILE__, __LINE__, __VA_ARGS__)
+#define DBG_ERROR(msg, ...)  Seal_LogError("%s:%d: "##msg, __FILE__, __LINE__, __VA_ARGS__)
 
 #else
 
 #define DBG_WARN(msg, ...)
-#define DBG_ERROR(msg, ...)  Seal_LogError(msg, SEAL_FALSE, __VA_ARGS__)
+#define DBG_ERROR(msg, ...)  Seal_LogError(msg, __VA_ARGS__)
 
 #define Seal_DumpLeak(...)
 #define Seal_LeakCheck(...) 	1

@@ -14,7 +14,7 @@
 
 Seal_Bool Seal_Init(void) {
 	Seal_Bool glfwSuccessful = glfwInit() != GLFW_TRUE ? SEAL_FALSE : SEAL_TRUE;
-	if (!glfwSuccessful) Seal_LogError("Failed to initialize GLFW", SEAL_FALSE);
+	if (!glfwSuccessful) Seal_LogError("Failed to initialize GLFW");
 
 	return glfwSuccessful;
 }
