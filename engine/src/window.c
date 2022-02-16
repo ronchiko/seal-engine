@@ -4,7 +4,8 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-#include "seal/window.h"
+#include <seal/window.h>
+#include <seal/io.h>
 
 extern void Seal_InitializeInputBuffering(GLFWwindow *window);
 
@@ -22,7 +23,8 @@ Seal_Window *Seal_CreateWindow(Seal_Size w, Seal_Size h, const char *title, Seal
 		.fullscreen = SEAL_FALSE,
 		.decorated = SEAL_TRUE,
 		.centered = SEAL_TRUE,
-		.show = SEAL_TRUE
+		.show = SEAL_TRUE,
+		.iconPath = NULL
 	};
 	static Seal_Bool glewInitilized = SEAL_FALSE;
 
@@ -52,6 +54,22 @@ Seal_Window *Seal_CreateWindow(Seal_Size w, Seal_Size h, const char *title, Seal
 	if(!glewInitilized) {
 		Seal_Bool glewSuccessful = glewInit() != GLEW_OK ? SEAL_FALSE : SEAL_TRUE;
 		if (!glewSuccessful) Seal_LogError("Failed to initialize glew: %s", SEAL_TRUE, gluErrorString(glGetError()));
+	}
+
+	if (opts->iconPath) {
+		Seal_Image image = Seal_LoadImage(opts->iconPath);
+
+		if (image.buffer && image.width && image.height) {
+			GLFWimage glfwImage;
+			glfwImage.height = image.height;
+			glfwImage.width  = image.width;
+			glfwImage.pixels = (unsigned char *)image.buffer;
+
+			glfwSetWindowIcon(win->window, 1, &glfwImage);
+			Seal_FreeImage(image);
+		}else {
+			Seal_LogWarning("Failed to open icon '%s', reverting to default", opts->iconPath);
+		}
 	}
 
 	glViewport(0, 0, win->width, win->height);

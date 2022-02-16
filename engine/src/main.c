@@ -22,9 +22,17 @@ int main(int argc, char **argv) {
 		return 1;
 	}
 
-	Seal_InitializeSystems();
-	Seal_Window *window = Seal_CreateWindow(700, 700, Seal_ProgramName, NULL); 
+	Seal_WindowOptions opts = {
+		.show = SEAL_TRUE,
+		.fullscreen = SEAL_FALSE,
+		.decorated = SEAL_TRUE,
+		.centered = SEAL_TRUE,
+		.iconPath = "assets/textures/walrus-icon2.png"
+	};
+	Seal_Window *window = Seal_CreateWindow(700, 700, Seal_ProgramName, &opts); 
 
+	Seal_InitializeSystems();
+	
 	Seal_InitTransformBuffer();
 	if(Seal_InitializeUserSystems()) {
 		Seal_LogFatal("Failed to initialize user systems");

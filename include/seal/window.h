@@ -12,6 +12,7 @@ typedef struct {
 	Seal_Bool decorated;
 	Seal_Bool centered;
 	Seal_Bool show;
+	const char *iconPath;
 } Seal_WindowOptions;
 
 Seal_Window *Seal_CreateWindow(Seal_Size w, Seal_Size h,  const char *title, SEAL_OPTIONAL Seal_WindowOptions *);
