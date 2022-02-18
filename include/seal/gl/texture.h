@@ -6,6 +6,6 @@
 
 typedef uint32_t Seal_TextureId;
 
-Seal_TextureId Seal_CreateTextureFromAsset(const char *path);
+Seal_TextureId Seal_CreateTextureFromAsset(const char *path, Seal_Int2 *size);
 
 void Seal_FreeTexture(Seal_TextureId);

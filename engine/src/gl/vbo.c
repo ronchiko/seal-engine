@@ -17,10 +17,6 @@ void Seal_GL_VBOEnableVArray(Seal_GL_VAOContext *context, Seal_Int attribLoc, Se
 		(const void *)(Seal_Long)(context->usedFloats * sizeof(Seal_Float))));
 
 	context->usedFloats += count;
-	Seal_Log("Registering %d, used %d, offset %d [%d]", attribLoc, 
-		context->usedFloats, 
-		context->usedFloats * sizeof(Seal_Float), 
-		context->vsize * sizeof(Seal_Float));
 }
 
 void Seal_GL_VBOEnbaleVArraysMatrixNxN(Seal_GL_VAOContext *context, Seal_Int attribLoc, Seal_Int n) {

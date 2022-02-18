@@ -97,7 +97,6 @@ Seal_Bool Seal_LoadPngImage(Seal_Image *img, const char *path) {
 		goto failure;
 	}
 
-	Seal_Log("Assigning values [%d, %d]: %d", width, height, colorType);
 	img->height = height;
 	img->width = width;
 	img->depth = 4;

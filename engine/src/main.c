@@ -27,7 +27,7 @@ int main(int argc, char **argv) {
 		.fullscreen = SEAL_FALSE,
 		.decorated = SEAL_TRUE,
 		.centered = SEAL_TRUE,
-		.iconPath = "assets/textures/walrus-icon2.png"
+		.iconPath = NULL
 	};
 	Seal_Window *window = Seal_CreateWindow(700, 700, Seal_ProgramName, &opts); 
 
@@ -59,5 +59,6 @@ int main(int argc, char **argv) {
 
 	Seal_DestroyWindow(window);
 
+	Seal_Close();
 	return 0;
 }

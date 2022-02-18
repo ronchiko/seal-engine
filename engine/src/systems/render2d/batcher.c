@@ -33,12 +33,11 @@ static Seal_Bool _IsBatcher(Seal_BatcherIndex i) {
 
 static Seal_Bool _PrepareBatcherGl(Seal_Batcher2d *b2d, Seal_GL_Program program) {
 	typedef Seal_Int GLLoc;
-	Seal_Log("Preparing batcher GLs");
 	assert(sizeof(Vertex) == 2 * sizeof(Seal_Vector2) + sizeof(Seal_Color) + 9 * sizeof(Seal_Float));
 	
 	b2d->uniforms.texture = Seal_GL_ProgramUniformLocation(program, SEAL_SHADER_TEXTURE_PARAM);
 	if(b2d->uniforms.texture < 0) {
-		Seal_LogError("Uniform 'Seal_Texture' is required for each shader");
+		Seal_LogError("Uniform '%s' is required for each shader", SEAL_SHADER_TEXTURE_PARAM);
 		return SEAL_FALSE;
 	}
 
@@ -50,8 +49,8 @@ static Seal_Bool _PrepareBatcherGl(Seal_Batcher2d *b2d, Seal_GL_Program program)
 	GLLoc required[5] = { vertex, uv, transform, tint, 0xFF };
 	for(int i = 0; i < 4; ++i)
 		if(required[i] >= required[i + 1] || required[i] < 0) {
-			Seal_LogError("Program %d doesn't match the required shader parameter for the Render2d system", 
-				program);
+			Seal_LogError("Attributes '%s', '%s', '%s' and '%s' are must exists and be ordered for each shader", 
+				SEAL_SHADER_VERTEX_PARAM, SEAL_SHADER_UV_PARAM, SEAL_SHADER_TRANSFORM_PARAM, SEAL_SHADER_TINT_PARAM);
 			return SEAL_FALSE;
 		}
 

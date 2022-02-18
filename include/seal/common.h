@@ -21,6 +21,14 @@ typedef int32_t		Seal_Int;
 typedef int64_t		Seal_Long;
 typedef float 		Seal_Float;
 
+typedef union {
+	struct {
+		Seal_Int x;
+		Seal_Int y;
+	};
+	Seal_Int array[2];
+} Seal_Int2;
+
 #define SEAL_ID_INVALID 		0
 
 #define Seal_Bit(n) 	(1 << (n))
