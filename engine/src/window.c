@@ -9,6 +9,8 @@
 
 extern void Seal_InitializeInputBuffering(GLFWwindow *window);
 
+static Seal_Window *gFocusedWindow;
+
 struct Seal_Window {
 	GLFWwindow *window;
 	Seal_Size x, y;
@@ -74,12 +76,15 @@ Seal_Window *Seal_CreateWindow(Seal_Size w, Seal_Size h, const char *title, Seal
 
 	glViewport(0, 0, win->width, win->height);
 	Seal_InitializeInputBuffering(win->window);
-	
+
+	gFocusedWindow = win;	
 	return win;
 }
 
 void Seal_DestroyWindow(Seal_Window *window) {
 	if(window) {
+		if (gFocusedWindow == window) gFocusedWindow = NULL;
+		
 		glfwDestroyWindow(window->window);
 		free(window);
 	}
@@ -117,4 +122,20 @@ void Seal_SetWindowFullscreen(Seal_Window *window, Seal_Bool fullscreen) {
 		glfwSetWindowMonitor(window->window, NULL, window->x, window->y, window->width, window->height, 0);
 	}
 	window->isFullscreen = fullscreen;
+}
+
+void Seal_GetWindowStats(Seal_Size *width, Seal_Size *height, Seal_Float *ratio) {
+	#define ASSIGN_IF_VALID(ptr, value) if((ptr)) *(ptr) = (value); 
+
+	ASSIGN_IF_VALID(width, 0);
+	ASSIGN_IF_VALID(height, 0);
+	ASSIGN_IF_VALID(ratio, 0.0f);
+
+	if(!gFocusedWindow) {
+		return;
+	}
+
+	ASSIGN_IF_VALID(width, gFocusedWindow->width);
+	ASSIGN_IF_VALID(height, gFocusedWindow->height);
+	ASSIGN_IF_VALID(ratio, (float)gFocusedWindow->width / gFocusedWindow->height);
 }

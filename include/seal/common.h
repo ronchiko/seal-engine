@@ -21,6 +21,9 @@ typedef int32_t		Seal_Int;
 typedef int64_t		Seal_Long;
 typedef float 		Seal_Float;
 
+typedef Seal_Int Seal_Camera;
+typedef Seal_ID Seal_Entity;
+
 typedef union {
 	struct {
 		Seal_Int x;
@@ -41,6 +44,7 @@ void Seal_Close(void);
 #pragma region Logging
 
 void Seal_Log(const char *fmt, ...);
+void Seal_LogInfo(const char *fmt, ...);
 void Seal_LogWarning(const char *fmt, ...);
 void Seal_LogError(const char *fmt, ...);
 void Seal_LogFatal(const char *fmt, ...);

@@ -15,6 +15,9 @@ extern const char *SEAL_SHADER_VERTEX_PARAM;
 extern const char *SEAL_SHADER_UV_PARAM;
 extern const char *SEAL_SHADER_TRANSFORM_PARAM;
 extern const char *SEAL_SHADER_TINT_PARAM;
+// Uniform
 extern const char *SEAL_SHADER_TEXTURE_PARAM;
+extern const char *SEAL_SHADER_CAMERA_MATRIX_PARAM;
+
 
 extern const char *SEAL_VERTEX_SHADER_FALLBACK, *SEAL_FRAGMENT_SHADER_FALLBACK;

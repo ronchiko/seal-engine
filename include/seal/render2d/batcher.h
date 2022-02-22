@@ -28,6 +28,7 @@ typedef struct Seal_Batcher2d {
 
 	struct {
 		Seal_GL_UniformAddress texture;
+		Seal_GL_UniformAddress camera;
 	} uniforms;
 } Seal_Batcher2d;
 

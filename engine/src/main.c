@@ -30,6 +30,7 @@ int main(int argc, char **argv) {
 		.iconPath = NULL
 	};
 	Seal_Window *window = Seal_CreateWindow(700, 700, Seal_ProgramName, &opts); 
+	Seal_SetMainCamera(Seal_AddCamera((Seal_Vector2){0, 0}, NULL));
 
 	Seal_InitializeSystems();
 	
@@ -56,6 +57,8 @@ int main(int argc, char **argv) {
 
 	Seal_FreeInputBuffering();
 	Seal_TerminateSystems();
+
+	Seal_CleanCameras();
 
 	Seal_DestroyWindow(window);
 

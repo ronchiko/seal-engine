@@ -28,6 +28,14 @@ void Seal_LogError(const char *fmt, ...) {
 	_LogWithArgs(fmt, _args);
 }
 
+void Seal_LogInfo(const char *fmt, ...) {
+	va_list _args;
+	va_start(_args, fmt);
+	
+	printf("[\033[34;1mINFO\033[0m]: ");
+	_LogWithArgs(fmt, _args);
+}
+
 void Seal_LogWarning(const char *fmt, ...) {
 	va_list _args;
 	va_start(_args, fmt);

@@ -102,6 +102,7 @@ Seal_Bool Seal_LoadPngImage(Seal_Image *img, const char *path) {
 	img->depth = 4;
 	img->buffer = malloc(sizeof(Seal_Float) * width * height);
 
+	Seal_Bool result = SEAL_TRUE;
 	switch(colorType) {	
 	case PNG_COLOR_TYPE_PALETTE:
 	case PNG_COLOR_TYPE_RGBA:
@@ -112,11 +113,13 @@ Seal_Bool Seal_LoadPngImage(Seal_Image *img, const char *path) {
 		break;
 	default:
 		Seal_LogError("Invalid color type %d for PNG %s", colorType, path);
+		result = SEAL_FALSE;
 		break;
 	}
 
+	free(file.data);
 	png_destroy_read_struct(&pngPtr, &pngInfo, NULL);
-	return SEAL_TRUE;
+	return result;
 
 failure:
 	Seal_LogError("Failed to load PNG '%s'", path);

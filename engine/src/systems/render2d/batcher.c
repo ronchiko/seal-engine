@@ -7,6 +7,7 @@
 
 #include "const.h"
 
+#include "seal/types/camera.h"
 #include "seal/render2d/batcher.h"
 
 #define BATCHER_GROWTH		 	5
@@ -35,10 +36,19 @@ static Seal_Bool _PrepareBatcherGl(Seal_Batcher2d *b2d, Seal_GL_Program program)
 	typedef Seal_Int GLLoc;
 	assert(sizeof(Vertex) == 2 * sizeof(Seal_Vector2) + sizeof(Seal_Color) + 9 * sizeof(Seal_Float));
 	
-	b2d->uniforms.texture = Seal_GL_ProgramUniformLocation(program, SEAL_SHADER_TEXTURE_PARAM);
-	if(b2d->uniforms.texture < 0) {
-		Seal_LogError("Uniform '%s' is required for each shader", SEAL_SHADER_TEXTURE_PARAM);
-		return SEAL_FALSE;
+	typedef struct { const char *uniform; Seal_GL_UniformAddress *address; } Uniform;
+	Uniform LOAD_UNIFORMS[] = {
+		{ SEAL_SHADER_TEXTURE_PARAM,  		&b2d->uniforms.texture },
+		{ SEAL_SHADER_CAMERA_MATRIX_PARAM,  &b2d->uniforms.camera },
+	
+		{ NULL, NULL }
+	};
+
+	for(Uniform *uni = LOAD_UNIFORMS; uni->address && uni->uniform ;++uni) {
+		if((*(uni->address) = Seal_GL_ProgramUniformLocation(program, uni->uniform)) < 0) {
+			Seal_LogError("Uniform '%s' is required for each shader program", uni->uniform);
+			return SEAL_FALSE;
+		}
 	}
 
 	GLLoc vertex 	= Seal_GL_ProgramAttribLocation(program, SEAL_SHADER_VERTEX_PARAM);
@@ -49,7 +59,7 @@ static Seal_Bool _PrepareBatcherGl(Seal_Batcher2d *b2d, Seal_GL_Program program)
 	GLLoc required[5] = { vertex, uv, transform, tint, 0xFF };
 	for(int i = 0; i < 4; ++i)
 		if(required[i] >= required[i + 1] || required[i] < 0) {
-			Seal_LogError("Attributes '%s', '%s', '%s' and '%s' are must exists and be ordered for each shader", 
+			Seal_LogError("Attributes '%s', '%s', '%s' and '%s' are must exists and be ordered for each shader program", 
 				SEAL_SHADER_VERTEX_PARAM, SEAL_SHADER_UV_PARAM, SEAL_SHADER_TRANSFORM_PARAM, SEAL_SHADER_TINT_PARAM);
 			return SEAL_FALSE;
 		}
@@ -95,6 +105,7 @@ static Seal_Int _GetOrAllocateBatcher(void) {
 	return gBatchers.used++;
 } 
 
+
 Seal_BatcherIndex Seal_CreateBatcher2d(Seal_Size vlimit, Seal_GL_Program program) {
 	if (vlimit <= 0 || !glIsProgram(program)) return -1;
 
@@ -136,6 +147,10 @@ void Seal_FreeAllBatcher2ds(void) {
 	for(Seal_BatcherIndex i = 0; i < gBatchers.used; ++i) {
 		if(_IsBatcher(i)) Seal_FreeBatcher2d(i);
 	}
+
+	free(gBatchers.batchers);
+	gBatchers.alloced = gBatchers.used = 0;
+	gBatchers.batchers = NULL;
 }
 
 typedef const Seal_Batcher2d *restrict ReadonlyBatcher;
@@ -181,10 +196,16 @@ Seal_Bool Seal_Batcher2dUploadVertex(Seal_GL_Program program, Seal_GL_Texture te
 }
 
 void Seal_Batcher2dPublish(void) {
+	Seal_Matrix3x3 camera;
+	Seal_M3Identity(camera);
+
 	GLCall(glEnable(GL_TEXTURE_2D));
 	GLCall(glEnable(GL_BLEND));
 	GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
 	
+	Seal_M3Camera(camera, Seal_GetMainCamera());
+	Seal_M3Transpose(camera);
+
 	for(Seal_BatcherIndex index = 0; index < gBatchers.used; ++index) {
 		if (!_IsBatcher(index))
 			continue;
@@ -196,6 +217,8 @@ void Seal_Batcher2dPublish(void) {
 		GLCall(glActiveTexture(GL_TEXTURE1));
 		GLCall(glBindTexture(GL_TEXTURE_2D, b2d->identifiers.texture));
 		GLCall(glUniform1i(b2d->uniforms.texture, 1));
+
+		GLCall(glUniformMatrix3fv(b2d->uniforms.camera, 1, GL_FALSE, (float *)camera));
 
 		// Link VAO
 		GLCall(glBindVertexArray(b2d->gl.vao));

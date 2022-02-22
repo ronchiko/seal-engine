@@ -129,8 +129,7 @@ Seal_Int Seal_GL_ProgramAttribLocation(Seal_GL_Program program, const char *name
 
 Seal_Int Seal_GL_ProgramUniformLocation(Seal_GL_Program program, const char *name) {
 	GLint offset;
-	GLCall(offset = glGetUniformLocation(program, name));
-
+	offset = glGetUniformLocation(program, name);
 	if (offset < 0) {
 		Seal_LogError("Failed to find attribute '%s' in program %d", name, program);
 		return -1;

@@ -2,8 +2,6 @@
 
 #include "seal/common.h"
 
-typedef Seal_ID Seal_Entity;
-
 /*
 	This structure is the base of every component, the engine assumes the first 2 fields of 
 	the component are parent ID and component ID, so include this structure as your field inside
@@ -68,8 +66,3 @@ Seal_IterativeBuffer Seal_BufferOf(Seal_ComponentBuffer buffer);
 Seal_Size Seal_QueryComponents(Seal_QueryContext *ctx, Seal_Component **outBuffer, Seal_Size maxCount);
 
 Seal_Bool Seal_ComponentsMatch(Seal_ComponentsQuery query, Seal_Component **components, const Seal_Size compoCount);
-
-#define SEAL_COMPONENT
-
-#define SEAL_COMPONENT_BUFFER_INIT	void
-#define SEAL_COMPONENT_BUFFER_GET	Seal_ComponentBuffer

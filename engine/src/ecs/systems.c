@@ -42,6 +42,7 @@ void Seal_ActivateSystem(Seal_System *system) {
 
 void Seal_TerminateSystems(void) {
 	typedef struct Seal_SystemsContainer Container;
+	
 	for(Seal_Size i = 0; i < __SEAL_SYSTEM_TYPES__; ++i) {
 		Container *container = gSystems + i;
 

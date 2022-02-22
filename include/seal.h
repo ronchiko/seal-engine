@@ -10,6 +10,7 @@
 #include "seal/window.h"
 #include "seal/ecs/component.h"
 #include "seal/ecs/system.h"
+#include "seal/types/camera.h"
 
 #include "seal/components/2d/transform.h"
 #include "seal/components/2d/renderer.h"

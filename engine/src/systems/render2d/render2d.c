@@ -11,6 +11,7 @@
 #include "seal/render2d/batcher.h"
 #include "const.h"
 
+
 static struct {
 	Seal_GL_Shader vertex;
 	Seal_GL_Shader fragment;
@@ -73,7 +74,7 @@ void Seal_Renderer2dCleanup(void) {
 void Seal_ActivateRender2dSystem(void) {
 	if(gGLDefaults.program == SEAL_GL_NO_PROGRAM) {
 		extern Seal_GL_Shader Seal_GL_CompileShaderRaw(const char *source, Seal_GL_ShaderType type);
-		Seal_Log("Loading in fallback shaders");
+		Seal_LogInfo("Loading in fallback shaders");
 
 		gGLDefaults.vertex = Seal_GL_CompileShaderRaw(SEAL_VERTEX_SHADER_FALLBACK, SEAL_SHADER_VERTEX);
 		gGLDefaults.fragment = Seal_GL_CompileShaderRaw(SEAL_FRAGMENT_SHADER_FALLBACK, SEAL_SHADER_FRAGMENT);
