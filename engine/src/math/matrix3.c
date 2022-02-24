@@ -73,17 +73,19 @@ void Seal_M3Camera(Seal_Matrix3x3 m, Seal_Camera camera) {
 
 	if (windowW <= 0 || ratio <= 0) {
 		return;
-	}	// Something went wrong
+	}
 	
-	Seal_Matrix3x3 position, rotation; 
+	Seal_Matrix3x3 position, rotation, scale; 
 	Seal_M3Translate(position, -object->position.x, -object->position.y);
 
 	Seal_Matrix2x2 m2 = { 0 }; 
+	Seal_M3Identity(scale);
 	Seal_M2Screen(m2, 10, ratio, object->zoom);
-	_Seal_MatrixBlit(position, m2, 2, 2, 3, 3);
+	_Seal_MatrixBlit(scale, m2, 2, 2, 3, 3);
 
 	Seal_M3Rotation(rotation, object->angle);
 
-	Seal_M3Multiply(m, m, rotation);
 	Seal_M3Multiply(m, m, position);
+	Seal_M3Multiply(m, m, rotation);
+	Seal_M3Multiply(m, m, scale);
 }
