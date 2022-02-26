@@ -8,7 +8,8 @@
 #include <seal/components/2d/renderer.h>
 #include <seal/components/2d/transform.h>
 
-#include "seal/render2d/batcher.h"
+#include "batcher.h"
+
 #include "const.h"
 
 

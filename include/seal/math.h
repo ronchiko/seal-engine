@@ -1,7 +1,7 @@
 #pragma once
 
 /* Linear interpolation (0 <= t <= 1) */
-static inline float Seal_Lerp(float a, float b, float t) { return a * t + b * (1 - t); }
+static inline float Seal_Lerp(float a, float b, float t) { return b * t + a * (1 - t); }
 
 float Seal_Clampf(float v, float min, float max);
 int Seal_Clamp(int v, int min, int max);

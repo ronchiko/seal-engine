@@ -8,7 +8,7 @@
 #include "const.h"
 
 #include "seal/types/camera.h"
-#include "seal/render2d/batcher.h"
+#include "batcher.h"
 
 #define BATCHER_GROWTH		 	5
 #define QUADS_PER_BATCHER		500

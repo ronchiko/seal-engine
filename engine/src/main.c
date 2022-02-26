@@ -2,7 +2,6 @@
 #include <time.h>
 
 #include "seal.h"
-#include "seal/render2d/batcher.h"
 
 #define APPPROC extern
 
