@@ -1,5 +1,5 @@
 
-#include "tests/component.h"
+#include "test_component.h"
 
 static const int FIRST_PARENT_ID = 100;
 
@@ -21,7 +21,7 @@ int TestComponentBuffer_AddSingleComponent(void) {
 
 	// Act + Assert
 	ASSERT(!memcmp(&component, Seal_AddComponent(buffer, (Seal_Component *)&component), sizeof(TestComponent)));
-	ASSERT(_Seal_TestBufferSize(buffer, 1));
+	ASSERT(Seal_GetComponentBufferSize(buffer) == 1);
 
 cleanup:
 	Seal_FreeComponentBuffers();
@@ -42,7 +42,7 @@ int TestComponentBuffer_AddMultipleCompnents(void) {
 	// Assert + Act
 	ASSERT(!memcmp(&component1, Seal_AddComponent(buffer, (Seal_Component *)&component1), sizeof(TestComponent)));
 	ASSERT(!memcmp(&component2, Seal_AddComponent(buffer, (Seal_Component *)&component2), sizeof(TestComponent)));
-	ASSERT(_Seal_TestBufferSize(buffer, 2));
+	ASSERT(Seal_GetComponentBufferSize(buffer) == 2);
 
 cleanup:
 	Seal_FreeComponentBuffers();
@@ -57,7 +57,7 @@ int TestComponentBuffer_WhenEmptyBuffer_ThenNoLeak(void) {
 	Seal_ComponentBuffer buffer = Seal_CreateComponentBuffer(sizeof(TestComponent));
 	
 	// Act + Assert
-	ASSERT(_Seal_TestBufferSize(buffer, 0));
+	ASSERT(Seal_GetComponentBufferSize(buffer) == 0);
 
 cleanup:
 	Seal_FreeComponentBuffers();
@@ -77,7 +77,7 @@ int TestComponentBufferQuery_OnSingleBuffer_ThenReturnAll(void) {
 
 	Seal_AddComponent(buffer, (Seal_Component *)components);
 	Seal_AddComponent(buffer, (Seal_Component *)(components + 1));
-	ASSERT(_Seal_TestBufferSize(buffer, 2));
+	ASSERT(Seal_GetComponentBufferSize(buffer) == 2);
 
 	Seal_IterativeBuffer buffers[1] = { Seal_BufferOf(buffer) };
 
@@ -124,8 +124,8 @@ int TestComponentBufferQuery_OnMultipleBuffersSingleMatch_ThenReturnMatch(void) 
 	Seal_AddComponent(buffer2, (Seal_Component *)components);
 	Seal_AddComponent(buffer2, (Seal_Component *)(components + 2));
 
-	ASSERT(_Seal_TestBufferSize(buffer1, 2));
-	ASSERT(_Seal_TestBufferSize(buffer2, 2));
+	ASSERT(Seal_GetComponentBufferSize(buffer1) == 2);
+	ASSERT(Seal_GetComponentBufferSize(buffer2) == 2);
 
 	Seal_IterativeBuffer buffers[2] = { Seal_BufferOf(buffer1), Seal_BufferOf(buffer2) };
 
@@ -179,8 +179,8 @@ int TestComponentBufferQuery_OnMultipleBuffers_ThenReturnMatches(void) {
 	Seal_AddComponent(buffer2, (Seal_Component *)(components + 3));
 	Seal_AddComponent(buffer2, (Seal_Component *)(components + 4));
 
-	ASSERT(_Seal_TestBufferSize(buffer1, 4));
-	ASSERT(_Seal_TestBufferSize(buffer2, 4));
+	ASSERT(Seal_GetComponentBufferSize(buffer1) == 4);
+	ASSERT(Seal_GetComponentBufferSize(buffer2) == 4);
 
 	Seal_IterativeBuffer buffers[2] = { Seal_BufferOf(buffer1), Seal_BufferOf(buffer2) };
 

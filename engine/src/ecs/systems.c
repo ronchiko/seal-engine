@@ -4,6 +4,8 @@
 #include "seal/gl.h"
 #include "seal/ecs/system.h"
 
+#include "query.h"
+
 #define CONTAINER_GROWTH 		10
 
 #define TryStatelessInvokation(invoke)	if((invoke)) (*invoke)()

@@ -11,9 +11,11 @@ include_directories(
 	$ENV{SEAL_INCLUDE}
 )
 
-file(GLOB_RECURSE SOURCE CONFIGURE_DEPENDS src/*.c)
+file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS src/*.c)
+list(FILTER SOURCES EXCLUDE REGEX "test_.*\.c")
+
 add_library(seal-pkg-lib STATIC 
-	${SOURCE}
+	${SOURCES}
 )
 
 add_executable(seal-pkg main.c)
@@ -28,5 +30,19 @@ if (DEFINED SEAL_BUILD_GLOBAL)
 	MoveExecutable(seal-pkg 	exe packager)
 endif()
 
+# Tests
 enable_testing()
-add_subdirectory(tests)
+file(GLOB_RECURSE TESTS CONFIGURE_DEPENDS test_*.c)
+
+message(STATUS "Building tests for packager")
+foreach(FILE ${TESTS})
+	string(REGEX REPLACE "${CMAKE_SOURCE_DIR}" "" TEST ${FILE})
+	string(REPLACE "/" "." TEST ${TEST})
+	string(REPLACE "test_" "" TEST ${TEST})
+
+	add_executable(test${TEST} ${FILE})
+	target_link_libraries(test${TEST} PRIVATE seal-pkg-lib)
+	target_include_directories(test${TEST} PRIVATE include)
+
+	add_test(test${TEST} test${TEST} ${CMAKE_CURRENT_LIST_DIR})
+endforeach()

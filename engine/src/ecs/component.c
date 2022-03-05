@@ -3,7 +3,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "seal/ecs/component.h"
+#include "query.h"
+
 
 #define COMPONENT_BUFFER_BUFFER_GROWTH		100
 #define COMPONENT_BUFFER_ARRAY_GROWTH		10
@@ -230,14 +231,9 @@ Seal_Size Seal_QueryComponents(Seal_QueryContext *ctx, Seal_Component **outBuffe
 	return count;
 }
 
-
-// *
-// Internal testing method
-// *
-
-Seal_Bool _Seal_TestBufferSize(Seal_ComponentBuffer buffer, Seal_Size compareTo) {
+Seal_Int Seal_GetComponentBufferSize(Seal_ComponentBuffer buffer) {
 	if (buffer < 0 || (Seal_Size)buffer >= gBuffers.used)
-		return SEAL_FALSE;
+		return -1;
 	struct Seal_ComponentBuffer *buf = gBuffers.buffers + buffer;
-	return buf->used == compareTo + 1;
+	return buf->used - 1;
 }
