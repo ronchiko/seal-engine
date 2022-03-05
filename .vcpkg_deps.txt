@@ -2,4 +2,3 @@ glew
 glfw3
 libzip
 libpng
-libjpeg-turbo
