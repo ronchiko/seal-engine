@@ -28,7 +28,7 @@ endif()
 enable_testing()
 file(GLOB_RECURSE TESTS CONFIGURE_DEPENDS test_*.c)
 
-make_directory("tests/test_folder/empty")
+make_directory("test_folder/empty")
 
 message(STATUS "Building tests for framework")
 foreach(FILE ${TESTS})
