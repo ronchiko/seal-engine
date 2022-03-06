@@ -2,6 +2,8 @@
 
 #include "seal/common.h"
 
+#define COMPONENT (Seal_Component *)
+
 /*
 	This structure is the base of every component, the engine assumes the first 2 fields of 
 	the component are parent ID and component ID, so include this structure as the first field inside

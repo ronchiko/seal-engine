@@ -14,3 +14,4 @@
 
 #include "seal/components/2d/transform.h"
 #include "seal/components/2d/renderer.h"
+#include "seal/components/2d/collider.h"

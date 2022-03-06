@@ -3,6 +3,9 @@
 #include <stdint.h>
 #include <time.h>
 
+/* Double pointer */
+#define PPTR(type)	type**
+
 /* \brief clarification the variable doesnt need a value and can be null */
 #define SEAL_OPTIONAL
 #define SEAL_NULL NULL
@@ -20,6 +23,8 @@ typedef uint32_t 	Seal_ID;
 typedef int32_t		Seal_Int;
 typedef int64_t		Seal_Long;
 typedef float 		Seal_Float;
+
+typedef uint32_t 	Seal_BitMask;
 
 typedef Seal_Int Seal_Camera;
 typedef Seal_ID Seal_Entity;
