@@ -3,6 +3,7 @@
 #include <seal.h>
 
 #include <seal/systems/collision2d/shapes.h>
+#include <seal/systems/collision2d/raycast.h>
 
 typedef struct {
 	Seal_Component base;

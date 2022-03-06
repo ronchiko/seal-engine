@@ -3,7 +3,7 @@
 #include "seal/common.h"
 
 #define COMPONENT (Seal_Component *)
-
+#define SEAL_INVALID_ENTITY		0
 /*
 	This structure is the base of every component, the engine assumes the first 2 fields of 
 	the component are parent ID and component ID, so include this structure as the first field inside
@@ -32,6 +32,8 @@ void Seal_RemoveComponent(Seal_ComponentBuffer buffer, Seal_ID entityId);
 void Seal_TrimComponentBuffer(Seal_ComponentBuffer buffer);
 /* Frees a component buffer and all its data */
 void Seal_FreeComponentBuffers(void);
+
+Seal_Component *Seal_FindComponentForEntity(Seal_ComponentBuffer buffer, Seal_Entity entity);
 
 /* Creates a new entity */
 Seal_Entity Seal_CreateEntity(void);

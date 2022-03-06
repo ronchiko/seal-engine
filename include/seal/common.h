@@ -39,6 +39,8 @@ typedef union {
 
 #define SEAL_ID_INVALID 		0
 
+#define SEAL_UINT32_MAX		0xFFFFFFFF
+
 #define Seal_Bit(n) 	(1 << (n))
 
 #include "seal/debug.h"

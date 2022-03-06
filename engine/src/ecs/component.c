@@ -90,10 +90,26 @@ static Seal_Size Seal_FindComponentWithId(Seal_Byte *buf, Seal_Int begin, Seal_I
 	return Seal_FindComponentWithId(buf, begin + _length, length - _length, componentSize, id);
 }
 
+Seal_Component *Seal_FindComponentForEntity(Seal_ComponentBuffer buffer, Seal_Entity entity) {
+	if(entity == SEAL_INVALID_ENTITY || buffer < 0 || buffer >= (Seal_ID)gBuffers.used) {
+		return SEAL_NULL;
+	}
+
+	struct Seal_ComponentBuffer *buf = gBuffers.buffers + buffer;
+	const Seal_Size virtualStructure = buf->sizeofComponent + sizeof(Seal_ComponentHeader);
+	
+	Seal_Int index = Seal_FindComponentWithId(buf->buffer, 0, buf->used, buf->sizeofComponent, entity);
+	if (index < 0) {
+		return SEAL_NULL;
+	}
+
+	return VSTRUCT_STRUCT_AT(buf->buffer, index);
+}
+
 Seal_Component *Seal_AddComponent(Seal_ComponentBuffer buffer, const Seal_Component *component) {
 	if(!component || buffer < 0 || buffer >= (Seal_ID)gBuffers.used) {
 		Seal_LogError("%zu is not a valid component buffer", buffer);
-		return SEAL_ID_INVALID;
+		return SEAL_NULL;
 	}
 
 	struct Seal_ComponentBuffer *buf = gBuffers.buffers + buffer;

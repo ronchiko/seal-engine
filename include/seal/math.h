@@ -1,5 +1,7 @@
 #pragma once
 
+#include <float.h>
+
 /* Linear interpolation (0 <= t <= 1) */
 static inline float Seal_Lerp(float a, float b, float t) { return b * t + a * (1 - t); }
 
@@ -23,6 +25,10 @@ float Seal_Floor(float b);
 
 /* Computes the inverse sqrt of n, using the quake fast inverse square root */
 float Seal_FastInverseSqrt(float n);
+
+#define SEAL_MAX_FLOAT		FLT_MAX
+#define SEAL_MIN_FLOAT		FLT_MIN
+#define SEAL_EPSILON		FLT_EPSILON
 
 // Additional maths
 #include "seal/math/vector2.h"

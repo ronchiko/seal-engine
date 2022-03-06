@@ -10,7 +10,7 @@ find_package(libzip CONFIG REQUIRED)
 # Build seal library
 
 file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS src/*.c)
-list(FILTER SOURCES EXCLUDE REGEX "test_*\.c")
+list(FILTER SOURCES EXCLUDE REGEX "test_")
 
 add_library(SealEngine STATIC ${SOURCES})
 
