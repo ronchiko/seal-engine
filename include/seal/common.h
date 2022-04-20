@@ -10,6 +10,7 @@
 #define SEAL_OPTIONAL
 #define SEAL_NULL NULL
 
+#define NO_FLAGS	0
 #define EMPTY		{ 0 }
 
 typedef enum {

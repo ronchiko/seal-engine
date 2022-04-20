@@ -2,43 +2,35 @@
 
 #include <seal.h>
 
+#define AABB2D	(Seal_AABBCollider2d *)	
 
-typedef struct {
-	Seal_UByte flags;
-	Seal_Rect aabb;
-} Seal_AABB;
-
-#define SEAL_MAX_SPRITES_PER_GRID		SEAL_UBYTE_MAX - 1
+typedef void (*Seal_AABBTriggerHandler)(Seal_Entity other);
 
 typedef enum {
-	SEAL_GRID_INVISIBLE = Seal_Bit(0),
-	SEAL_GRID_SOLID = Seal_Bit(1)
-} Seal_GridFlags;
+	SEAL_AABB_TRIGGER = Seal_Bit(0),
+} Seal_AABBColliderFlags;
 
 typedef struct {
+	Seal_Component base;
+	
 	Seal_UByte flags;
-	Seal_TextureId texture;
-	Seal_Rect portion;
-} Seal_GridSprite;
+	Seal_Rect aabb;
 
+	Seal_AABBTriggerHandler triggerHandler;
+} Seal_AABBCollider2d;
 
-#define SEAL_GRID_AIR			0
+void Seal_InitAABBCollider2dBuffer(void);
+Seal_ComponentBuffer Seal_GetAABBCollider2dBuffer(void);
 
+/* 	
+	Adds an AABB collider component and initialezes it to a 
+	value using other components on the object if possible (Non trigger collider)
+*/
+Seal_AABBCollider2d *Seal_AddInitializedAABBCollider2d(Seal_Entity entity);
+/* Adds an uninitialized AABB component to the entity (The AABB rect is 0,0,1,1)*/
+Seal_AABBCollider2d *Seal_AddAABBCollider2d(Seal_Entity entity);
 
-typedef struct {
-	Seal_UByte flags;
+/* Sets an AABB collider2d to be a trigger collider */
+Seal_Bool Seal_MakeAABBCollider2dTrigger(Seal_AABBCollider2d *collider, Seal_AABBTriggerHandler handler);
 
-	Seal_UByte *cells;					// cell[x + y * w] == 0 is an empty cell
-	Seal_Size width, height;
-
-	Seal_GridSprite *spritesIndexer;
-} Seal_Grid;
-
-Seal_Grid *Seal_CreateGrid(Seal_Size w, Seal_Size h, Seal_UByte flags);
-void Seal_FreeGrid(Seal_Grid *grid);
-
-Seal_UByte Seal_GridRegisterTile(Seal_Grid *grid, Seal_GridSprite data);
-
-void Seal_GridAddTile(Seal_Grid *grid, Seal_Int2 position, Seal_UByte tileType);
-void Seal_GridAddTileRange(Seal_Grid *grid, Seal_Int2 postion, Seal_Int2 size, Seal_UByte tileType);
-
+void Seal_RemoveAABBCollider2d(Seal_Entity entity);
