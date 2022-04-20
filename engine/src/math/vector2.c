@@ -1,4 +1,6 @@
 
+#include <math.h>
+
 #include "seal/math.h"
 
 Seal_Vector2 Seal_V2V2Add(Seal_Vector2 a, Seal_Vector2 b) {
@@ -7,6 +9,10 @@ Seal_Vector2 Seal_V2V2Add(Seal_Vector2 a, Seal_Vector2 b) {
 
 Seal_Vector2 Seal_V2V2Sub(Seal_Vector2 a, Seal_Vector2 b) {
 	return (Seal_Vector2){ .x = a.x - b.x, .y = a.y - b.y };
+}
+
+Seal_Vector2 Seal_V2V2Scale(Seal_Vector2 a, Seal_Vector2 b) {
+	return (Seal_Vector2){ .x = a.x * b.x, .y = a.y * b.y };
 }
 
 Seal_Vector2 Seal_V2Scale(Seal_Vector2 a, float b) {
@@ -31,3 +37,6 @@ Seal_Vector2 Seal_V2V2Lerp(Seal_Vector2 a, Seal_Vector2 b, float t) {
 	};
 }
 
+Seal_Float Seal_V2Magnitude(Seal_Vector2 a) {
+	return sqrtf(a.x * a.x + a.y * a.y);
+}
