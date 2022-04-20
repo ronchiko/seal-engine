@@ -4,6 +4,8 @@
 
 #include "seal/ecs/component.h"
 
+#define TRANSFORM2D 	(Seal_Transform2d *)
+
 typedef struct Seal_Transform2d {
 	struct Seal_Component base;
 

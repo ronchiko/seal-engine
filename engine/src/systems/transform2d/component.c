@@ -23,7 +23,7 @@ Seal_Transform2d *Seal_AddTransform(Seal_Entity entity,
 	};
 
 	Seal_AttachComponent(entity, COMPONENT &transform);
-	Seal_Transform2d *t2d = (Seal_Transform2d *)Seal_AddComponent(gTransformBuffer, COMPONENT &transform);
+	Seal_Transform2d *t2d = TRANSFORM2D Seal_AddComponent(gTransformBuffer, COMPONENT &transform);
 	if (!t2d) {
 		Seal_LogFatal("Transform2d buffer is not initialized");
 		return NULL;
