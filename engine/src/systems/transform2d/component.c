@@ -2,7 +2,7 @@
 #include "seal/ecs/component.h"
 #include "seal/components/2d/transform.h"
 
-static Seal_ComponentBuffer gTransformBuffer;
+static Seal_ComponentBuffer gTransformBuffer = SEAL_INVALID_BUFFER;
 
 Seal_ComponentBuffer Seal_GetTransformBuffer(void) {
 	return gTransformBuffer;
@@ -22,8 +22,14 @@ Seal_Transform2d *Seal_AddTransform(Seal_Entity entity,
 		.scale = { scale.x, scale.y }
 	};
 
-	Seal_AttachComponent(entity, &transform.base);
-	return (Seal_Transform2d *)Seal_AddComponent(gTransformBuffer, &transform.base);
+	Seal_AttachComponent(entity, COMPONENT &transform);
+	Seal_Transform2d *t2d = (Seal_Transform2d *)Seal_AddComponent(gTransformBuffer, COMPONENT &transform);
+	if (!t2d) {
+		Seal_LogFatal("Transform2d buffer is not initialized");
+		return NULL;
+	}
+
+	return t2d;
 }
 
 void Seal_RemoveTransform(Seal_Entity e) {

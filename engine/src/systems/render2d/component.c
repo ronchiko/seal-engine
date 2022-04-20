@@ -3,7 +3,7 @@
 
 #include "seal/components/2d/renderer.h"
 
-static Seal_ComponentBuffer gRender2dBuffer;
+static Seal_ComponentBuffer gRender2dBuffer = SEAL_INVALID_BUFFER;
 
 Seal_ComponentBuffer Seal_GetRenderer2dBuffer(void) {
 	return gRender2dBuffer;
@@ -25,8 +25,14 @@ Seal_Renderer2d *Seal_AddRenderer2d(Seal_Entity entity, Seal_GL_Program program)
 		.textureId = SEAL_NO_TEXTURE
 	};
 
-	Seal_AttachComponent(entity, &r2d.base);
-	return (Seal_Renderer2d *)Seal_AddComponent(gRender2dBuffer, &r2d.base);
+	Seal_AttachComponent(entity, COMPONENT &r2d);
+	Seal_Renderer2d *component = (Seal_Renderer2d *)Seal_AddComponent(gRender2dBuffer, COMPONENT &r2d);
+	if (!component) {
+		Seal_LogFatal("Render2d buffers are not initalized");
+		return NULL;
+	}
+
+	return component;
 }
 
 void Seal_RemoveRenderer2d(Seal_Entity entity) {

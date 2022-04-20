@@ -4,6 +4,7 @@
 
 #define COMPONENT (Seal_Component *)
 #define SEAL_INVALID_ENTITY		0
+#define SEAL_INVALID_BUFFER		-1
 /*
 	This structure is the base of every component, the engine assumes the first 2 fields of 
 	the component are parent ID and component ID, so include this structure as the first field inside
@@ -28,6 +29,7 @@ Seal_Size Seal_CountComponentBuffers(void);
 Seal_Component *Seal_AddComponent(Seal_ComponentBuffer buffer, const Seal_Component *component);
 /* Marks a component as deleted */
 void Seal_RemoveComponent(Seal_ComponentBuffer buffer, Seal_ID entityId);
+
 /* Deletes a marked components from a buffer */
 void Seal_TrimComponentBuffer(Seal_ComponentBuffer buffer);
 /* Frees a component buffer and all its data */
