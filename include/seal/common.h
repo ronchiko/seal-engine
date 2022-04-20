@@ -10,6 +10,8 @@
 #define SEAL_OPTIONAL
 #define SEAL_NULL NULL
 
+#define EMPTY		{ 0 }
+
 typedef enum {
 	SEAL_FALSE,
 	SEAL_TRUE
@@ -39,14 +41,23 @@ typedef union {
 
 #define SEAL_ID_INVALID 		0
 
+#define SEAL_UBYTE_MAX		0xFF
 #define SEAL_UINT32_MAX		0xFFFFFFFF
 
 #define Seal_Bit(n) 	(1 << (n))
 
+/* Bitwise right rotation */
+#define Seal_Ror(n, v)		(((n) >> (v)) | ((n) << (8 * sizeof (n) - (v))))
+/* Bitwise left rotation */
+#define Seal_Rol(n, v)		(((n) << (v)) | ((n) >> (8 * sizeof (n) - (v))))
+
 #include "seal/debug.h"
 
 Seal_Bool Seal_Init(void);
-void Seal_Close(void);
+/* Terminates the main loop */
+void Seal_Exit(void);
+/* Frees up all the memory allocated by seal & prints runtime stats in debug mode */
+void Seal_Cleanup(void); 
 
 #pragma region Logging
 
@@ -73,3 +84,5 @@ inline Seal_Float Seal_Time() {
 }
 
 typedef struct { Seal_Float rgba[4]; } Seal_Color;
+
+#define SEAL_SET_OPTIONAL(outptr, value)	if ((outptr)) *(outptr) = value
