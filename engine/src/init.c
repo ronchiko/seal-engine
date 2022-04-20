@@ -12,6 +12,8 @@
 #include "seal/common.h"
 #include "seal/ecs/component.h"
 
+Seal_Bool Seal_ExitFlag = SEAL_FALSE;
+
 Seal_Bool Seal_Init(void) {
 	Seal_Bool glfwSuccessful = glfwInit() != GLFW_TRUE ? SEAL_FALSE : SEAL_TRUE;
 	if (!glfwSuccessful) Seal_LogError("Failed to initialize GLFW");
@@ -19,7 +21,11 @@ Seal_Bool Seal_Init(void) {
 	return glfwSuccessful;
 }
 
-void Seal_Close(void) {
+void Seal_Exit() {
+	Seal_ExitFlag = SEAL_TRUE;
+}
+
+void Seal_Cleanup(void) {
 	Seal_FreeComponentBuffers();
 	
 #ifdef _DEBUG

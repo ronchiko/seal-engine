@@ -13,6 +13,8 @@ APPPROC char *Seal_ProgramName;
 extern void Seal_FreeInputBuffering(void);
 extern void Seal_UpdateInputBuffers(void);
 
+extern Seal_Bool Seal_ExitFlag;
+
 Seal_TimeUnit Seal_BeginTime, Seal_DeltaTimeMs; 
 Seal_Float Seal_DeltaTime;
 
@@ -43,7 +45,7 @@ int main(int argc, char **argv) {
 
 	Seal_BeginTime = clock(), Seal_DeltaTimeMs = 0;
 	Seal_DeltaTime = 0;
-	while(Seal_WindowContinue(window)) {
+	for(;!Seal_ExitFlag && Seal_WindowContinue(window);) {
 		clock_t fs = clock();
 
 		Seal_UpdateLoop();
@@ -61,6 +63,6 @@ int main(int argc, char **argv) {
 
 	Seal_DestroyWindow(window);
 
-	Seal_Close();
+	Seal_Cleanup();
 	return 0;
 }
