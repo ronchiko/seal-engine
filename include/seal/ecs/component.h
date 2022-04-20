@@ -37,6 +37,9 @@ void Seal_FreeComponentBuffers(void);
 
 Seal_Component *Seal_FindComponentForEntity(Seal_ComponentBuffer buffer, Seal_Entity entity);
 
+Seal_Bool Seal_GetComponent(Seal_ComponentBuffer buffer, Seal_Int index, Seal_Component **out);
+Seal_Bool Seal_NextComponent(Seal_ComponentBuffer buffer, Seal_Int *i, Seal_Component **out);
+
 /* Creates a new entity */
 Seal_Entity Seal_CreateEntity(void);
 /* Queues an entity to be deleted */

@@ -9,11 +9,13 @@
 #define COMPONENT_BUFFER_BUFFER_GROWTH		100
 #define COMPONENT_BUFFER_ARRAY_GROWTH		10
 
-/* Virtual structures macros */
+/* Virtual structure array macros */
 #define VSTRUCT_AT(b, i)					(b) + virtualStructure * (i)
 #define VSTRUCT_H_AT(b, i)					((Seal_ComponentHeader *)(VSTRUCT_AT(b, i)))
-#define VSTRUCT_STRUCT_AT(b, i)				((Seal_Component *)(VSTRUCT_AT(b, i) + sizeof(Seal_ComponentHeader)))
+#define VSTRUCT_STRUCT_AT(b, i)				(COMPONENT (VSTRUCT_AT(b, i) + sizeof(Seal_ComponentHeader)))
 #define VSTRUCT_SIZE(l)						(l) * virtualStructure
+
+#define IS_INVALID_BUFFER(buffer) 			((buffer) < 0 || (buffer) >= gBuffers.used)
 
 typedef enum {
 	SEAL_NO_FLAGS = 0,
@@ -91,7 +93,7 @@ static Seal_Size Seal_FindComponentWithId(Seal_Byte *buf, Seal_Int begin, Seal_I
 }
 
 Seal_Component *Seal_FindComponentForEntity(Seal_ComponentBuffer buffer, Seal_Entity entity) {
-	if(entity == SEAL_INVALID_ENTITY || buffer < 0 || buffer >= (Seal_ID)gBuffers.used) {
+	if(entity == SEAL_INVALID_ENTITY || IS_INVALID_BUFFER(buffer)) {
 		return SEAL_NULL;
 	}
 
@@ -107,7 +109,7 @@ Seal_Component *Seal_FindComponentForEntity(Seal_ComponentBuffer buffer, Seal_En
 }
 
 Seal_Component *Seal_AddComponent(Seal_ComponentBuffer buffer, const Seal_Component *component) {
-	if(!component || buffer < 0 || buffer >= (Seal_ID)gBuffers.used) {
+	if(!component || IS_INVALID_BUFFER(buffer)) {
 		Seal_LogError("%zu is not a valid component buffer", buffer);
 		return SEAL_NULL;
 	}
@@ -129,12 +131,14 @@ Seal_Component *Seal_AddComponent(Seal_ComponentBuffer buffer, const Seal_Compon
 	Seal_ComponentHeader *header = VSTRUCT_H_AT(buf->buffer, index);
 	header->flags = SEAL_NO_FLAGS;
 
+	Seal_Log("[Component Buffer %u] Added component UID: %u, PID: %u", buffer, ncmp->componentId, ncmp->parentId);
+
 	++buf->used;
 	return ncmp;
 }
 
 void Seal_RemoveComponent(Seal_ComponentBuffer buffer, Seal_ID componentId) {
-	if(componentId <= 0 || buffer < 0 || (Seal_Size)buffer >= gBuffers.used) {
+	if(componentId <= 0 || IS_INVALID_BUFFER(buffer)) {
 		Seal_LogError("Failed to remove component %d from buffer %d", componentId, buffer);
 		return;
 	}
@@ -149,7 +153,7 @@ void Seal_RemoveComponent(Seal_ComponentBuffer buffer, Seal_ID componentId) {
 }
 
 void Seal_TrimComponentBuffer(Seal_ComponentBuffer buffer) {
-	if(buffer < 0 || (Seal_Size)buffer >= gBuffers.used){
+	if(IS_INVALID_BUFFER(buffer)){
 		Seal_LogError("Failed to trim buffer %d", buffer);
 		return;
 	}
@@ -174,7 +178,7 @@ Seal_Size Seal_CountComponentBuffers(void) {
 }
 
 struct Seal_IterativeBuffer Seal_BufferOf(Seal_ComponentBuffer buffer) {
-	if(buffer < 0 || (Seal_Size)buffer >= gBuffers.used){
+	if(IS_INVALID_BUFFER(buffer)){
 		Seal_LogError("Failed to find buffer %d", buffer);
 		return (struct Seal_IterativeBuffer){
 			.buffer = NULL,
@@ -248,8 +252,32 @@ Seal_Size Seal_QueryComponents(Seal_QueryContext *ctx, Seal_Component **outBuffe
 }
 
 Seal_Int Seal_GetComponentBufferSize(Seal_ComponentBuffer buffer) {
-	if (buffer < 0 || (Seal_Size)buffer >= gBuffers.used)
+	if (IS_INVALID_BUFFER(buffer))
 		return -1;
+	
 	struct Seal_ComponentBuffer *buf = gBuffers.buffers + buffer;
 	return buf->used - 1;
+}
+
+Seal_Bool Seal_GetComponent(Seal_ComponentBuffer buffer, Seal_Int index, Seal_Component **out) {
+	if (!out || IS_INVALID_BUFFER(buffer)) return SEAL_FALSE;
+	*out = SEAL_NULL;
+	++index;		// Skip placeholder
+
+	struct Seal_ComponentBuffer *buf = gBuffers.buffers + buffer;
+	const Seal_Size virtualStructure = buf->sizeofComponent + sizeof(Seal_ComponentHeader);
+
+	if (index >= buf->used || index < 1) return SEAL_FALSE;
+
+	*out = VSTRUCT_STRUCT_AT(buf->buffer, index);
+	return SEAL_TRUE; 	
+}
+
+Seal_Bool Seal_NextComponent(Seal_ComponentBuffer buffer, Seal_Int *i, Seal_Component **out) {
+	if(!i || !out || !*out || IS_INVALID_BUFFER(buffer)) return SEAL_FALSE;
+
+	Seal_Bool result = Seal_GetComponent(buffer, *i, out);
+	++*i;
+
+	return result;
 }

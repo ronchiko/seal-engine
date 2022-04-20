@@ -78,7 +78,7 @@ void Seal_UpdateLoop(void) {
 			.hasNext = SEAL_FALSE
 		};
 
-		Seal_Component *components[MAX_BUFFERS];  
+		Seal_Component *components[MAX_BUFFERS] = EMPTY;  
 		Seal_Size size;
 
 		TryStatelessInvokation(container->systems[i].stateless_handlers.prepare);
@@ -91,12 +91,3 @@ void Seal_UpdateLoop(void) {
 		TryStatelessInvokation(container->systems[i].stateless_handlers.finalize);
 	}
 }
-
-// void Seal_InvokeSystems(Seal_SystemType type, Seal_Component *components, const Seal_Size count) {
-// 	typedef struct Seal_SystemsContainer Container;
-// 	Container *container = gSystems + type;
-
-// 	for(int i = 0; i < container->used; ++i) {
-// 		if(container->systems[i].required)
-// 	}
-// }
