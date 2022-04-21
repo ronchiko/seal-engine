@@ -195,6 +195,59 @@ cleanup:
 
 #pragma endregion
 
+#pragma region Series 
+
+int TestRectToV2Series_WhenValidSeries_ThenValidSeriesElements(void) {
+	int result = 0;
+
+	Seal_Vector2 buffer[4];
+
+	Seal_Rect rectA = { .x = 1, .y = 1, .w = 5, .h = 5 };
+	Seal_V2Series series = Seal_V2SeriesFromBuffer(buffer, 4);
+
+	Seal_Log("%zu, %p", series.length, series.elements);
+	Seal_Bool successful = Seal_RectToV2Series(series, &rectA);
+	ASSERT(successful);
+
+	ASSERT(series.elements[0].x == rectA.x && series.elements[0].y == rectA.y);
+	ASSERT(series.elements[1].x == rectA.x + rectA.w && series.elements[1].y == rectA.y);
+	ASSERT(series.elements[2].x == rectA.x && series.elements[2].y == rectA.y + rectA.h);
+	ASSERT(series.elements[3].x == rectA.x + rectA.w && series.elements[3].y == rectA.y + rectA.h);
+
+cleanup:
+	return result;
+}
+
+int TestRectToV2Series_WhenSeriesTooShort_ThenFail(void) {
+	int result = 0;
+
+	Seal_Vector2 buffer[4];
+
+	Seal_Rect rectA = { .x = 1, .y = 1, .w = 5, .h = 5 };
+	Seal_V2Series series = Seal_V2SeriesFromBuffer(buffer, 3);
+
+	Seal_Bool successful = Seal_RectToV2Series(series, &rectA);
+	ASSERT(!successful);
+
+cleanup:
+	return result;
+}
+
+int TestRectToV2Series_WhenRectNull_ThenFail(void) {
+	int result = 0;
+
+	Seal_Vector2 buffer[4];
+	Seal_V2Series series = Seal_V2SeriesFromBuffer(buffer, 4);
+
+	Seal_Bool successful = Seal_RectToV2Series(series, SEAL_NULL);
+	ASSERT(!successful);
+
+cleanup:
+	return result;
+}
+
+#pragma endregion
+
 int main() {
 	int result = 0;
 
@@ -218,6 +271,11 @@ int main() {
 	RUN_TEST(TestRectIntersects_WhenAContainsB_ThenReturnTrue);
 	RUN_TEST(TestRectIntersects_WhenAOverlapsB_ThenReturnTrue);
 	RUN_TEST(TestRectIntersects_WhenAOutsideOfB_ThenReturnFalse);
+
+	// RectToV2Series
+	RUN_TEST(TestRectToV2Series_WhenValidSeries_ThenValidSeriesElements);
+	RUN_TEST(TestRectToV2Series_WhenSeriesTooShort_ThenFail);
+	RUN_TEST(TestRectToV2Series_WhenRectNull_ThenFail);
 
 	return result;
 }
