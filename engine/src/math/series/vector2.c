@@ -1,12 +1,13 @@
 
 #include <math.h>
 
+#include <seal/math.h>
 #include <seal/math/series/vector2.h>
 
 #define FOREACH_ELEMENT(series) for (int i = 0; i < series.length; ++i)
 
 Seal_Bool Seal_V2SeriesPut(Seal_V2Series series, Seal_Size index, Seal_Vector2 v2) {
-	if  (series.length >= index || !series.elements) return SEAL_FALSE;
+if  (series.length <= index || !series.elements) return SEAL_FALSE;
 
 	series.elements[index] = v2;
 	return SEAL_TRUE;
