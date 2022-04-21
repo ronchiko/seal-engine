@@ -9,6 +9,8 @@ static inline void Seal_Swap##extension(type *a, type *b) {type t = *a; *a = *b;
 static inline type Seal_Max##extension(type a, type b) { return a < b ? b : a; } \
 static inline type Seal_Min##extension(type a, type b) { return a > b ? b : a; }
 
+#define SEAL_PI			3.1415926f
+
 /* Linear interpolation (0 <= t <= 1) */
 static inline float Seal_Lerp(float a, float b, float t) { return b * t + a * (1 - t); }
 
@@ -39,6 +41,8 @@ float Seal_FastInverseSqrt(float n);
 
 #define Seal_IsBetween(min, n, max) ((min) <= (n) && (n) <= (max))  
 
+#define Deg2Rad(deg)		((deg) * SEAL_PI / 180.f)
+
 // Additional maths
 #include "seal/math/vector2.h"
 #include "seal/math/vector4.h"
@@ -48,3 +52,5 @@ float Seal_FastInverseSqrt(float n);
 #include "seal/math/matrix2.h"
 #include "seal/math/matrix3.h"
 #include "seal/math/matrix4.h"
+
+#include "seal/math/series/vector2.h"
