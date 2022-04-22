@@ -37,3 +37,16 @@ void Seal_V2SeriesRotate(Seal_V2Series series, float angle) {
 		};
 	}
 }
+
+void Seal_V2SeriesRectBounds(Seal_V2Series series) {
+	float minY = SEAL_MAX_FLOAT, maxY = 0, minX = SEAL_MAX_FLOAT, maxX = 0;
+
+	FOREACH_ELEMENT(series) {
+		minY = Seal_Minf(minY, series.elements[i].y);
+		maxY = Seal_Maxf(maxY, series.elements[i].y);
+		minX = Seal_Minf(minX, series.elements[i].x);
+		maxX = Seal_Maxf(maxX, series.elements[i].x);
+	}
+
+	return (Seal_Rect){.x = minX, .y = minY, .w = maxX - minX, .h = maxY - minY};
+} 

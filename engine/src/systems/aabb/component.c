@@ -33,7 +33,12 @@ Seal_AABBCollider2d *Seal_AddInitializedAABBCollider2d(Seal_Entity entity) {
 
 	Seal_Transform2d *transform = TRANSFORM2D Seal_FindComponentForEntity(Seal_GetTransformBuffer(), entity);
 	if (transform) {
-		// TODO: Add rotating box collisions
+		Seal_Vector2 seriesBuffer[4];
+		Seal_V2Series series = Seal_V2SeriesFromBuffer(seriesBuffer, 4);
+	
+		Seal_V2SeriesRotate(series, transform->angle);
+
+		aabb = Seal_V2SeriesRectBounds(series);
 	}
 
 	return AddAABBCollider(entity, aabb);	
