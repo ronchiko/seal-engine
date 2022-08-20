@@ -46,11 +46,6 @@ public:
 
 	void use() const;
 
-	/**
-	 * @brief Gets the default program
-	 */
-	static const program& default();
-
 private:
 
 	Seal_GL_Program m_program = NO_PROGRAM;

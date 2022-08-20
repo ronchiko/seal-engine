@@ -9,6 +9,8 @@ Seal_GL_Shader _create_shader(const std::string& source, Seal_GL_ShaderType type
 	if(shader.id == SEAL_GL_NO_SHADER) {
 		throw seal::error("Failed to create shader");
 	}
+
+	return shader;
 }
 
 shader::shader(const std::string& source, Seal_GL_ShaderType type) 

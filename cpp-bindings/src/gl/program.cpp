@@ -66,9 +66,3 @@ Seal_GL_UniformAddress program::uniform(const std::string& name) const {
 
 	return uniform;
 }
-
-const program& program::default() {
-	program program;
-	program.m_program = 0;
-	return program;
-}
