@@ -93,7 +93,10 @@ int Seal_RegisterButtonKeyBinding(Seal_KeyBinding id, int *keys, int count) {
 }
 
 int Seal_RegisterAxisKeyBindings(Seal_KeyBinding id, int *ps, int pc, int *ns, int nc) {
-	if (gBindings[id].type != SEAL_ACTION_UNASSINGED) return -1;
+	if (gBindings[id].type != SEAL_ACTION_UNASSINGED) {
+		Seal_LogError("Cannot override existing binding! (Binding=%zu)", id);
+		return -1;
+	}
 
 	const int posBufferSize = sizeof(int) * pc;
 	const int negBufferSize = sizeof(int) * nc;
@@ -111,7 +114,7 @@ int Seal_RegisterAxisKeyBindings(Seal_KeyBinding id, int *ps, int pc, int *ns, i
 	return 0;
 }
 
-Seal_Bool _IsOneKeyInState(Seal_KeySet set, Seal_InputButtonState state) {
+static Seal_Bool _IsOneKeyInState(Seal_KeySet set, Seal_InputButtonState state) {
 	for(int i = 0; i < set.count; ++i) {
 		if (gKeyStates[set.keys[i]] == state) return SEAL_TRUE;
 	}
@@ -133,7 +136,10 @@ _BUTTON_STATE_FNC(Released, SEAL_INPUT_RELEASED);
 _BUTTON_STATE_FNC(Up, SEAL_INPUT_UP);
 
 float Seal_GetAxis(Seal_KeyBinding id) {
-	if (gBindings[id].type != SEAL_KEY_ACTION_AXIS) return 0;
+	if (gBindings[id].type != SEAL_KEY_ACTION_AXIS) {
+		Seal_LogWarning("Cannot read action for axis binding (Binding=%zu)", id);
+		return 0;
+	}
 	
 	Seal_KeySet posSet = gBindings[id].axis.positive; 
 	Seal_KeySet negSet = gBindings[id].axis.negative; 

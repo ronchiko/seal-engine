@@ -1,5 +1,6 @@
 #pragma once
 
+#include <seal/math/rect.h>
 #include <seal/math/vector2.h>
 
 typedef struct {
@@ -14,5 +15,3 @@ void Seal_V2SeriesRotate(Seal_V2Series series, float angle);
 
 /* Puts a vector into the series at a specified index, returns false if failed, true otherwise */
 Seal_Bool Seal_V2SeriesPut(Seal_V2Series series, Seal_Size index, Seal_Vector2 v2);
-
-Seal_Rect Seal_V2SeriesRectBounds(Seal_V2Series series);

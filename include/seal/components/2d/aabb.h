@@ -34,3 +34,9 @@ Seal_AABBCollider2d *Seal_AddAABBCollider2d(Seal_Entity entity);
 Seal_Bool Seal_MakeAABBCollider2dTrigger(Seal_AABBCollider2d *collider, Seal_AABBTriggerHandler handler);
 
 void Seal_RemoveAABBCollider2d(Seal_Entity entity);
+
+/*
+	Given an entity who has a collider2d component, attempts to move him,
+	as far as possible
+ */
+void Seal_MoveAABBCollider2d(Seal_Entity entity, Seal_Vector2 motion);

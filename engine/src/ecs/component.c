@@ -131,8 +131,6 @@ Seal_Component *Seal_AddComponent(Seal_ComponentBuffer buffer, const Seal_Compon
 	Seal_ComponentHeader *header = VSTRUCT_H_AT(buf->buffer, index);
 	header->flags = SEAL_NO_FLAGS;
 
-	Seal_Log("[Component Buffer %u] Added component UID: %u, PID: %u", buffer, ncmp->componentId, ncmp->parentId);
-
 	++buf->used;
 	return ncmp;
 }

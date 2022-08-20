@@ -21,6 +21,6 @@ void Seal_DestroyWindow(SEAL_OPTIONAL Seal_Window *w);
 Seal_Bool Seal_WindowContinue(SEAL_OPTIONAL Seal_Window *);
 void Seal_WindowSwapBuffers(Seal_Window *);
 void Seal_SetWindowFullscreen(Seal_Window *, Seal_Bool fullscreen);
-Seal_Bool Seal_GetWindowFullscreen(Seal_Window *);
+Seal_Bool Seal_GetWindowFullscreen(const Seal_Window *);
 
 void Seal_GetWindowStats(Seal_Size *width, Seal_Size *height, Seal_Float *ratio);

@@ -38,7 +38,7 @@ void Seal_V2SeriesRotate(Seal_V2Series series, float angle) {
 	}
 }
 
-void Seal_V2SeriesRectBounds(Seal_V2Series series) {
+Seal_Rect Seal_V2SeriesRectBounds(Seal_V2Series series) {
 	float minY = SEAL_MAX_FLOAT, maxY = 0, minX = SEAL_MAX_FLOAT, maxX = 0;
 
 	FOREACH_ELEMENT(series) {
