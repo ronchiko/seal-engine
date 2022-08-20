@@ -14,3 +14,8 @@
 
 #include "seal/components/2d/transform.h"
 #include "seal/components/2d/renderer.h"
+
+#ifdef __cplusplus
+#include "seal/cpp/error.hpp"
+#include "seal/cpp/window.hpp"
+#endif

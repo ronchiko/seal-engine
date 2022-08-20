@@ -2,6 +2,10 @@
 
 #include "seal/common.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef enum {
 	SEAL_KEY_LEFT,
 	SEAL_KEY_RIGHT,
@@ -61,3 +65,7 @@ Seal_Bool Seal_IsButtonReleased(Seal_KeyBinding binding);
 Seal_Bool Seal_IsButtonUp(Seal_KeyBinding binding);
 
 float Seal_GetAxis(Seal_KeyBinding binding);
+
+#ifdef __cplusplus
+}
+#endif

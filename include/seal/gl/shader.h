@@ -2,6 +2,10 @@
 
 #include "seal/common.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #define SEAL_GL_NO_SHADER 		0
 #define SEAL_GL_NO_PROGRAM 		0
 
@@ -30,3 +34,7 @@ Seal_GL_UniformAddress Seal_GL_ProgramUniformLocation(Seal_GL_Program progam, co
 
 Seal_GL_Program Seal_GL_DefaultProgram(void);
 void Seal_GL_UseProgram(Seal_GL_Program);
+
+#ifdef __cplusplus
+}
+#endif

@@ -5,6 +5,10 @@
 
 #include <seal/gl.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef struct Seal_Renderer2d {
 	Seal_Component base;
 
@@ -24,3 +28,7 @@ void Seal_InitRenderer2dBuffer(void);
 Seal_ComponentBuffer Seal_GetRenderer2dBuffer(void);
 
 void Seal_ActivateRender2dSystem(void);
+
+#ifdef __cplusplus
+}
+#endif

@@ -4,6 +4,10 @@
 
 #include "common.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #ifdef _DEBUG
 #define GLCall(fnc)	{ fnc; GLenum err = glGetError(); if(err != GL_NO_ERROR) \
 	{ Seal_LogFatal("Error while executing '"#fnc"' %s\n", glewGetErrorString(err)); } }
@@ -35,6 +39,10 @@ Seal_GL_VAOContext Seal_GL_CreateVAOContext(Seal_GL_VBO vbo, Seal_Size expectedV
 
 void Seal_GL_VBOEnableVArray(Seal_GL_VAOContext *context, Seal_Int attribLoc, Seal_Int count);
 void Seal_GL_VBOEnbaleVArraysMatrixNxN(Seal_GL_VAOContext *context, Seal_Int attribLoc, Seal_Int n);
+
+#ifdef __cplusplus
+}
+#endif
 
 #include "seal/gl/shader.h"
 #include "seal/gl/texture.h"

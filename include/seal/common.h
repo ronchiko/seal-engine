@@ -3,6 +3,10 @@
 #include <stdint.h>
 #include <time.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /* Double pointer */
 #define PPTR(type)	type**
 
@@ -86,3 +90,7 @@ inline Seal_Float Seal_Time() {
 typedef struct { Seal_Float rgba[4]; } Seal_Color;
 
 #define SEAL_SET_OPTIONAL(outptr, value)	if ((outptr)) *(outptr) = value
+
+#ifdef __cplusplus
+}
+#endif

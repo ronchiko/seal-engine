@@ -2,6 +2,10 @@
 
 #include <seal/common.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef struct _Seal_FileIterator *Seal_FileIterator;
 
 typedef enum {
@@ -26,3 +30,7 @@ int Seal_CreateDirectory(const char *path);
 int Seal_DirectoryExists(const char *path);
 
 int Seal_DeleteChildren(const char *path, int flags);
+
+#ifdef __cplusplus
+}
+#endif

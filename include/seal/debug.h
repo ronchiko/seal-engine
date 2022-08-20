@@ -2,7 +2,13 @@
 
 #include "seal/common.h"
 
+
+
 #ifdef _DEBUG
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 void *Seal_DbgAllocate(size_t bytes, const char *file, int line);
 void *Seal_DbgCleanAllocate(size_t count, size_t size, const char *file, int line);
@@ -21,6 +27,10 @@ void Seal_DumpLeak(void *stream);
 
 void Seal_CleanDebugData(void);
 
+#ifdef __cplusplus
+}
+#endif
+
 #define DBG_WARN(msg, ...)   Seal_LogWarning("%s:%d: "##msg, __FILE__, __LINE__, __VA_ARGS__)
 #define DBG_ERROR(msg, ...)  Seal_LogError("%s:%d: "##msg, __FILE__, __LINE__, __VA_ARGS__)
 
@@ -33,3 +43,4 @@ void Seal_CleanDebugData(void);
 #define Seal_LeakCheck(...) 	1
 
 #endif
+

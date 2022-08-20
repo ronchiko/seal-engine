@@ -2,6 +2,10 @@
 
 #include "seal/common.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef union Seal_Vector2 {
 	struct {
 		Seal_Float x;
@@ -20,3 +24,7 @@ Seal_Float Seal_V2Magnitude(Seal_Vector2 a);
 Seal_Vector2 Seal_V2V2Lerp(Seal_Vector2 a, Seal_Vector2 b, float t);
 
 void Seal_V2Normalize(Seal_Vector2 *a);
+
+#ifdef __cplusplus
+}
+#endif

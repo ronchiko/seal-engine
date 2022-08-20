@@ -2,6 +2,10 @@
 
 #include <float.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #define CREATE_SWAP_FUNCTION(type, extension) \
 static inline void Seal_Swap##extension(type *a, type *b) {type t = *a; *a = *b; *b = t; } 
 
@@ -42,6 +46,10 @@ float Seal_FastInverseSqrt(float n);
 #define Seal_IsBetween(min, n, max) ((min) <= (n) && (n) <= (max))  
 
 #define Deg2Rad(deg)		((deg) * SEAL_PI / 180.f)
+
+#ifdef __cplusplus
+}
+#endif
 
 // Additional maths
 #include "seal/math/vector2.h"

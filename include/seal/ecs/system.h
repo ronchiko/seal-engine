@@ -2,6 +2,10 @@
 
 #include "seal/ecs/component.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef void (*Seal_SystemHandler)(Seal_Component **components, const Seal_Size count);
 typedef void (*Seal_SystemStatelessHandler)(void);
 
@@ -41,3 +45,7 @@ void Seal_UpdateLoop(void);
 #define SEAL_SYSTEM_CLEANUP(name)
 
 #define SEAL_ADD_SYSTEM(name, update, finalize, prepare, cleanup, ...)
+
+#ifdef __cplusplus
+}
+#endif

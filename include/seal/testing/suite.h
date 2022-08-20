@@ -5,6 +5,10 @@
 
 #include <seal/debug.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 // Mocks
 const char *Seal_ProgramName = "Test";
 int Seal_InitializeUserSystems(void) { return 0; }
@@ -36,3 +40,7 @@ static int ArrayContainsStr(const char ** array, int len, const char *str) {
 #define ASSERT_LEAK if(Seal_LeakCheck()) {\
  printf("\033[31;1m"__FILE__":%d Memory leak detected\033[0m\n", __LINE__); Seal_DumpLeak(stdout);\
  result = 1; }
+
+#ifdef __cplusplus
+}
+#endif

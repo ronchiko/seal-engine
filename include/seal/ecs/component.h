@@ -2,6 +2,10 @@
 
 #include "seal/common.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #define COMPONENT (Seal_Component *)
 #define SEAL_INVALID_ENTITY		0
 #define SEAL_INVALID_BUFFER		-1
@@ -51,3 +55,7 @@ typedef struct Seal_ComponentsQuery {
 	Seal_ComponentBuffer *components;
 	Seal_Size count;
 } Seal_ComponentsQuery;
+
+#ifdef __cplusplus
+}
+#endif
