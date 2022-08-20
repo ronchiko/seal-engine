@@ -8,6 +8,9 @@ extern "C" {
 
 #define SEAL_GL_NO_SHADER 		0
 #define SEAL_GL_NO_PROGRAM 		0
+#define SEAL_GL_NO_ATTRIBUTE 	-1
+#define SEAL_GL_NO_UNIFORM 		-1
+
 
 typedef enum Seal_GL_ShaderType {
 	SEAL_SHADER_VERTEX,

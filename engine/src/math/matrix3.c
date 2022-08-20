@@ -61,7 +61,7 @@ void Seal_M3Transpose(Seal_Matrix3x3 matrix) {
 void Seal_M3Camera(Seal_Matrix3x3 m, Seal_Camera camera) {
 	Seal_Size windowW;
 	Seal_Float ratio;
-	Seal_GetWindowStats(&windowW, NULL, &ratio);
+	Seal_GetWindowStats(NULL, &windowW, NULL, &ratio);
 
 	Seal_M3Identity(m);
 

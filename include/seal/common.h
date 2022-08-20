@@ -79,9 +79,17 @@ Seal_Size Seal_FConcatString(char **str, const char *o, Seal_Size strlen, Seal_S
 
 typedef clock_t Seal_TimeUnit;
 
+/**
+ * @note: Seal_DeltaTimeMs, Seal_DeltaTime and Seal_Time are only available if externalized by the main procedure
+ */
 extern Seal_TimeUnit Seal_DeltaTimeMs;
 extern Seal_Float Seal_DeltaTime;
 
+/**
+ * @brief Gets the time since the app has started running
+ * 
+ * @note Only available if main externalized the vairable Seal_BeginTime
+ */
 inline Seal_Float Seal_Time() {
 	extern Seal_TimeUnit Seal_BeginTime;
 	return (clock() - Seal_BeginTime) / 1000.f;

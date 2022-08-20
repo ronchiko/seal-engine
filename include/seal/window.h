@@ -27,7 +27,7 @@ void Seal_WindowSwapBuffers(Seal_Window *);
 void Seal_SetWindowFullscreen(Seal_Window *, Seal_Bool fullscreen);
 Seal_Bool Seal_GetWindowFullscreen(Seal_Window *);
 
-void Seal_GetWindowStats(Seal_Size *width, Seal_Size *height, Seal_Float *ratio);
+void Seal_GetWindowStats(Seal_Window* window, Seal_Size *width, Seal_Size *height, Seal_Float *ratio);
 
 #ifdef __cplusplus
 }

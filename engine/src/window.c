@@ -124,14 +124,18 @@ void Seal_SetWindowFullscreen(Seal_Window *window, Seal_Bool fullscreen) {
 	window->isFullscreen = fullscreen;
 }
 
-void Seal_GetWindowStats(Seal_Size *width, Seal_Size *height, Seal_Float *ratio) {
+void Seal_GetWindowStats(Seal_Window* window, Seal_Size *width, Seal_Size *height, Seal_Float *ratio) {
 	#define ASSIGN_IF_VALID(ptr, value) if((ptr)) *(ptr) = (value); 
 
 	ASSIGN_IF_VALID(width, 0);
 	ASSIGN_IF_VALID(height, 0);
 	ASSIGN_IF_VALID(ratio, 0.0f);
 
-	if(!gFocusedWindow) {
+	if(!window) {
+		window = gFocusedWindow;
+	}
+
+	if(!window) {
 		return;
 	}
 
