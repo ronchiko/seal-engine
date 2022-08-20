@@ -10,8 +10,6 @@
 
 namespace seal {
 
-
-
 class window {
 public:
 	using instance = std::unique_ptr<Seal_Window, decltype(&Seal_DestroyWindow)>;
