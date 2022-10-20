@@ -43,6 +43,7 @@ Seal_Component *Seal_FindComponentForEntity(Seal_ComponentBuffer buffer, Seal_En
 
 Seal_Bool Seal_GetComponent(Seal_ComponentBuffer buffer, Seal_Int index, Seal_Component **out);
 Seal_Bool Seal_NextComponent(Seal_ComponentBuffer buffer, Seal_Int *i, Seal_Component **out);
+Seal_Int Seal_GetComponentBufferSize(Seal_ComponentBuffer buffer);
 
 /* Creates a new entity */
 Seal_Entity Seal_CreateEntity(void);

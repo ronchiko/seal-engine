@@ -26,5 +26,3 @@ Seal_IterativeBuffer Seal_BufferOf(Seal_ComponentBuffer buffer);
 Seal_Size Seal_QueryComponents(Seal_QueryContext *ctx, Seal_Component **outBuffer, Seal_Size maxCount);
 
 Seal_Bool Seal_ComponentsMatch(Seal_ComponentsQuery query, Seal_Component **components, const Seal_Size compoCount);
-
-Seal_Int Seal_GetComponentBufferSize(Seal_ComponentBuffer buffer);

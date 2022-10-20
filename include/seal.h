@@ -18,4 +18,6 @@
 #ifdef __cplusplus
 #include "seal/cpp/error.hpp"
 #include "seal/cpp/window.hpp"
+#include "seal/cpp/gl.hpp"
+#include "seal/cpp/component.hpp"
 #endif

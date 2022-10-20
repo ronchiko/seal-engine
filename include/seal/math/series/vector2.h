@@ -6,7 +6,7 @@
 extern "C" {
 #endif
 
-typedef struct {
+typedef struct Seal_V2Series {
 	Seal_Vector2 *elements;
 	const Seal_Size length;
 } Seal_V2Series;

@@ -36,8 +36,12 @@ void window::toggle_fullscreen(bool active) {
 	Seal_SetWindowFullscreen(m_window.get(), static_cast<Seal_Bool>(active));
 }
 
-void window::resume() {
-	Seal_WindowContinue(m_window.get());
+bool window::should_continue() {
+	return static_cast<bool>(Seal_WindowContinue(m_window.get()));
+}
+
+void window::swap_buffers() {
+	Seal_WindowSwapBuffers(m_window.get());
 }
 
 window::stats window::get_stats() const {

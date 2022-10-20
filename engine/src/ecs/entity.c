@@ -29,7 +29,7 @@ Seal_ID Seal_AttachComponent(Seal_Entity entity, Seal_Component *component) {
 
 	component->componentId = ++gLastComponentId;
 	component->parentId = entity;
-
+	
 	return component->componentId;
 }
 

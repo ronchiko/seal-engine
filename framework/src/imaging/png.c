@@ -1,6 +1,9 @@
 
-#include <png.h>
+#include <stdlib.h>
 #include <string.h>
+
+#include <png.h>
+
 
 #include <seal/io/img.h>
 #include <seal/io.h>

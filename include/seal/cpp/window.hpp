@@ -37,7 +37,7 @@ public:
 
 	void swap_buffers();
 
-	void resume();
+	bool should_continue();
 
 private:
 	instance m_window;

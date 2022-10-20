@@ -18,7 +18,7 @@ typedef struct Seal_Transform2d {
 	Seal_Vector2 scale;
 } Seal_Transform2d;
 
-void Seal_InitTransformBuffer(void);
+void Seal_InitTransformBuffer(Seal_ComponentBuffer);
 Seal_ComponentBuffer Seal_GetTransformBuffer(void);
 
 Seal_Transform2d *Seal_AddTransform(Seal_Entity entity,

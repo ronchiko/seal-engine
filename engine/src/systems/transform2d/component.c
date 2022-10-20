@@ -8,8 +8,11 @@ Seal_ComponentBuffer Seal_GetTransformBuffer(void) {
 	return gTransformBuffer;
 }
 
-void Seal_InitTransformBuffer(void) {
-	gTransformBuffer = Seal_CreateComponentBuffer(sizeof(Seal_Transform2d));
+void Seal_InitTransformBuffer(Seal_ComponentBuffer buffer) {
+	gTransformBuffer = 
+		buffer == SEAL_INVALID_BUFFER ?
+		Seal_CreateComponentBuffer(sizeof(Seal_Transform2d)) :
+		buffer;
 }
 
 Seal_Transform2d *Seal_AddTransform(Seal_Entity entity,

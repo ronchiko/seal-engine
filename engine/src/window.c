@@ -103,7 +103,7 @@ void Seal_WindowSwapBuffers(Seal_Window *window) {
 	glfwSwapBuffers(window->window);
 }
 
-inline Seal_Bool Seal_GetWindowFullscreen(Seal_Window *window) {
+Seal_Bool Seal_GetWindowFullscreen(Seal_Window *window) {
 	return window->isFullscreen;
 }
 

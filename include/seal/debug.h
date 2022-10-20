@@ -16,10 +16,10 @@ void *Seal_DbgReallocate(void *ptr, size_t bytes, const char *file, int line);
 void  Seal_DbgRelease(void *ptr);
 
 #ifndef _USE_BASE_MALLOC
-#define malloc(l) 		Seal_DbgAllocate(l, __FILE__, __LINE__)
-#define calloc(n,s) 	Seal_DbgCleanAllocate(n, s, __FILE__, __LINE__)
-#define realloc(p,l) 	Seal_DbgReallocate(p, l, __FILE__, __LINE__)
-#define free(p)			Seal_DbgRelease(p)
+// #define malloc(l) 		Seal_DbgAllocate(l, __FILE__, __LINE__)
+// #define calloc(n,s) 	Seal_DbgCleanAllocate(n, s, __FILE__, __LINE__)
+// #define realloc(p,l) 	Seal_DbgReallocate(p, l, __FILE__, __LINE__)
+// #define free(p)			Seal_DbgRelease(p)
 #endif
 
 Seal_Bool Seal_LeakCheck(void);
